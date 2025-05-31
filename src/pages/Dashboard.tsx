@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,6 +20,10 @@ import { PortfolioOverview } from "@/components/PortfolioOverview";
 import { MarketData } from "@/components/MarketData";
 import { GoalTracker } from "@/components/GoalTracker";
 import { AnalyticsDashboard } from "@/components/AnalyticsDashboard";
+import { DrawingJournal } from "@/components/DrawingJournal";
+import { NotesManager } from "@/components/NotesManager";
+import { ScreenshotManager } from "@/components/ScreenshotManager";
+import { DiagramBuilder } from "@/components/DiagramBuilder";
 import { TradingChart } from "@/components/ui/TradingChart";
 import { WorldClock } from "@/components/WorldClock";
 import { GoalPlanningWidget } from "@/components/GoalPlanningWidget";
@@ -164,6 +167,14 @@ const Dashboard = () => {
         return <GoalTracker />;
       case "analytics":
         return <AnalyticsDashboard />;
+      case "drawing":
+        return <DrawingJournal />;
+      case "notes":
+        return <NotesManager />;
+      case "screenshots":
+        return <ScreenshotManager />;
+      case "diagrams":
+        return <DiagramBuilder />;
       default:
         return (
           <div className="space-y-6 main-content">
@@ -300,6 +311,38 @@ const Dashboard = () => {
     }
   };
 
+  const getPageTitle = () => {
+    const titles = {
+      overview: "Dashboard Overview",
+      journal: "Trading Journal",
+      portfolio: "Portfolio",
+      market: "Market Data", 
+      goals: "Goals & Planning",
+      analytics: "Analytics",
+      drawing: "Drawing Journal",
+      notes: "Notes Manager",
+      screenshots: "Screenshots",
+      diagrams: "Diagrams"
+    };
+    return titles[activeTab as keyof typeof titles] || "Dashboard";
+  };
+
+  const getPageDescription = () => {
+    const descriptions = {
+      overview: "Your trading performance at a glance",
+      journal: "Track and analyze your trades",
+      portfolio: "Monitor your portfolio performance",
+      market: "Real-time market intelligence",
+      goals: "Set and track your trading goals",
+      analytics: "Deep dive into your trading analytics",
+      drawing: "Sketch and analyze trade setups",
+      notes: "Organize your trading notes and ideas",
+      screenshots: "Manage trade confirmation screenshots",
+      diagrams: "Build trading strategy flow charts"
+    };
+    return descriptions[activeTab as keyof typeof descriptions] || "Welcome back, trader";
+  };
+
   return (
     <div ref={dashboardRef} className="min-h-screen bg-dark-blue text-foreground flex">
       <DashboardSidebar activeTab={activeTab} onTabChange={setActiveTab} />
@@ -309,20 +352,10 @@ const Dashboard = () => {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold mb-2 gradient-text">
-                {activeTab === "overview" ? "Dashboard Overview" :
-                 activeTab === "journal" ? "Trading Journal" :
-                 activeTab === "portfolio" ? "Portfolio" :
-                 activeTab === "market" ? "Market Data" :
-                 activeTab === "goals" ? "Goals & Planning" :
-                 activeTab === "analytics" ? "Analytics" : "Dashboard"}
+                {getPageTitle()}
               </h1>
               <p className="text-muted-foreground">
-                {activeTab === "overview" ? "Your trading performance at a glance" :
-                 activeTab === "journal" ? "Track and analyze your trades" :
-                 activeTab === "portfolio" ? "Monitor your portfolio performance" :
-                 activeTab === "market" ? "Real-time market intelligence" :
-                 activeTab === "goals" ? "Set and track your trading goals" :
-                 activeTab === "analytics" ? "Deep dive into your trading analytics" : "Welcome back, trader"}
+                {getPageDescription()}
               </p>
             </div>
             <Button className="bg-mint hover:bg-mint/80 text-dark-blue transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-mint/25">

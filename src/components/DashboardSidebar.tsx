@@ -1,16 +1,16 @@
 
 import { Button } from "@/components/ui/button";
 import { 
-  TrendingUp,
-  LayoutDashboard,
-  BookOpen,
-  PieChart,
-  BarChart3,
+  LayoutDashboard, 
+  BookOpen, 
+  PieChart, 
+  TrendingUp, 
   Target,
-  Calendar,
-  Settings,
-  User,
-  LogOut
+  BarChart3,
+  Pencil,
+  StickyNote,
+  Camera,
+  Workflow
 } from "lucide-react";
 
 interface DashboardSidebarProps {
@@ -19,66 +19,103 @@ interface DashboardSidebarProps {
 }
 
 export const DashboardSidebar = ({ activeTab, onTabChange }: DashboardSidebarProps) => {
-  const navItems = [
-    { id: "overview", label: "Overview", icon: <LayoutDashboard className="h-4 w-4" /> },
-    { id: "journal", label: "Trading Journal", icon: <BookOpen className="h-4 w-4" /> },
-    { id: "portfolio", label: "Portfolio", icon: <PieChart className="h-4 w-4" /> },
-    { id: "market", label: "Market Data", icon: <BarChart3 className="h-4 w-4" /> },
-    { id: "goals", label: "Goals & Planning", icon: <Target className="h-4 w-4" /> },
-    { id: "analytics", label: "Analytics", icon: <BarChart3 className="h-4 w-4" /> },
+  const menuItems = [
+    { 
+      id: "overview", 
+      label: "Overview", 
+      icon: <LayoutDashboard className="h-4 w-4" />,
+      description: "Dashboard home"
+    },
+    { 
+      id: "journal", 
+      label: "Trading Journal", 
+      icon: <BookOpen className="h-4 w-4" />,
+      description: "Track your trades"
+    },
+    { 
+      id: "portfolio", 
+      label: "Portfolio", 
+      icon: <PieChart className="h-4 w-4" />,
+      description: "Portfolio tracking"
+    },
+    { 
+      id: "market", 
+      label: "Market Data", 
+      icon: <TrendingUp className="h-4 w-4" />,
+      description: "Real-time data"
+    },
+    { 
+      id: "goals", 
+      label: "Goals & Planning", 
+      icon: <Target className="h-4 w-4" />,
+      description: "Set and track goals"
+    },
+    { 
+      id: "analytics", 
+      label: "Analytics", 
+      icon: <BarChart3 className="h-4 w-4" />,
+      description: "Performance analysis"
+    },
+    // New productivity features
+    { 
+      id: "drawing", 
+      label: "Drawing Journal", 
+      icon: <Pencil className="h-4 w-4" />,
+      description: "Sketch trade setups"
+    },
+    { 
+      id: "notes", 
+      label: "Notes Manager", 
+      icon: <StickyNote className="h-4 w-4" />,
+      description: "Organize your notes"
+    },
+    { 
+      id: "screenshots", 
+      label: "Screenshots", 
+      icon: <Camera className="h-4 w-4" />,
+      description: "Trade confirmations"
+    },
+    { 
+      id: "diagrams", 
+      label: "Diagrams", 
+      icon: <Workflow className="h-4 w-4" />,
+      description: "Build flow charts"
+    }
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-slate-900 border-r border-slate-700 p-6 flex flex-col">
-      {/* Logo */}
-      <div className="flex items-center space-x-2 mb-8">
-        <TrendingUp className="h-8 w-8 text-emerald-500" />
-        <span className="text-xl font-bold">TradeMaster</span>
+    <aside className="fixed left-0 top-0 h-screen w-64 bg-dark-blue border-r border-mint/20 z-50">
+      <div className="p-6 border-b border-mint/20">
+        <h1 className="text-xl font-bold gradient-text">TradeMaster Lite</h1>
+        <p className="text-sm text-muted-foreground mt-1">Professional Trading Platform</p>
       </div>
-
-      {/* Navigation */}
-      <nav className="flex-1 space-y-2">
-        {navItems.map((item) => (
+      
+      <nav className="p-4 space-y-2 h-full overflow-y-auto">
+        {menuItems.map((item) => (
           <Button
             key={item.id}
             variant={activeTab === item.id ? "default" : "ghost"}
-            className={`w-full justify-start ${
+            className={`w-full justify-start h-auto p-3 transition-all duration-300 ${
               activeTab === item.id 
-                ? "bg-emerald-600 hover:bg-emerald-700 text-white" 
-                : "text-slate-300 hover:text-white hover:bg-slate-800"
+                ? "bg-mint text-dark-blue hover:bg-mint/80" 
+                : "text-foreground hover:bg-mint/10 hover:text-mint border-transparent hover:border-mint/30"
             }`}
             onClick={() => onTabChange(item.id)}
           >
-            {item.icon}
-            <span className="ml-2">{item.label}</span>
+            <div className="flex items-center w-full">
+              <div className="mr-3">{item.icon}</div>
+              <div className="text-left">
+                <div className="font-medium text-sm">{item.label}</div>
+                <div className={`text-xs ${
+                  activeTab === item.id ? "text-dark-blue/70" : "text-muted-foreground"
+                }`}>
+                  {item.description}
+                </div>
+              </div>
+            </div>
           </Button>
         ))}
       </nav>
-
-      {/* User Section */}
-      <div className="border-t border-slate-700 pt-4 space-y-2">
-        <Button
-          variant="ghost"
-          className="w-full justify-start text-slate-300 hover:text-white hover:bg-slate-800"
-        >
-          <User className="h-4 w-4" />
-          <span className="ml-2">Profile</span>
-        </Button>
-        <Button
-          variant="ghost"
-          className="w-full justify-start text-slate-300 hover:text-white hover:bg-slate-800"
-        >
-          <Settings className="h-4 w-4" />
-          <span className="ml-2">Settings</span>
-        </Button>
-        <Button
-          variant="ghost"
-          className="w-full justify-start text-slate-300 hover:text-white hover:bg-slate-800"
-        >
-          <LogOut className="h-4 w-4" />
-          <span className="ml-2">Logout</span>
-        </Button>
-      </div>
     </aside>
   );
 };
