@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,9 +21,70 @@ import { PortfolioOverview } from "@/components/PortfolioOverview";
 import { MarketData } from "@/components/MarketData";
 import { GoalTracker } from "@/components/GoalTracker";
 import { AnalyticsDashboard } from "@/components/AnalyticsDashboard";
+import { TradingChart } from "@/components/ui/TradingChart";
+import { WorldClock } from "@/components/WorldClock";
+import { GoalPlanningWidget } from "@/components/GoalPlanningWidget";
+import { EconomicCalendar } from "@/components/EconomicCalendar";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const dashboardRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+  const chartsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Animate stats cards on load
+      gsap.fromTo(
+        ".stat-card",
+        { 
+          y: 50, 
+          opacity: 0,
+          scale: 0.95
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "back.out(1.7)"
+        }
+      );
+
+      // Animate main content
+      gsap.fromTo(
+        ".main-content",
+        { 
+          y: 30, 
+          opacity: 0 
+        },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          delay: 0.3,
+          ease: "power2.out"
+        }
+      );
+
+      // Floating animation for charts
+      gsap.to(".floating-chart", {
+        y: -10,
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "power2.inOut"
+      });
+
+    }, dashboardRef);
+
+    return () => ctx.revert();
+  }, [activeTab]);
 
   const stats = [
     {
@@ -53,6 +115,14 @@ const Dashboard = () => {
       changeType: "neutral" as const,
       icon: <BarChart3 className="h-4 w-4" />
     }
+  ];
+
+  const portfolioData = [
+    { name: 'Jan', value: 20000 },
+    { name: 'Feb', value: 21500 },
+    { name: 'Mar', value: 23000 },
+    { name: 'Apr', value: 22800 },
+    { name: 'May', value: 24847 },
   ];
 
   const recentTrades = [
@@ -96,20 +166,20 @@ const Dashboard = () => {
         return <AnalyticsDashboard />;
       default:
         return (
-          <div className="space-y-6">
+          <div className="space-y-6 main-content">
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div ref={statsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
-                <Card key={index} className="bg-slate-800/50 border-slate-700">
+                <Card key={index} className="stat-card glass-effect border-mint/20 hover-mint-border transition-all duration-300 hover:scale-105">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-400 mb-1">{stat.title}</p>
-                        <p className="text-2xl font-bold">{stat.value}</p>
+                        <p className="text-sm text-muted-foreground mb-1">{stat.title}</p>
+                        <p className="text-2xl font-bold gradient-text">{stat.value}</p>
                         <div className="flex items-center mt-2">
                           {stat.icon}
                           <span className={`text-sm ml-1 ${
-                            stat.changeType === 'positive' ? 'text-emerald-400' : 'text-slate-400'
+                            stat.changeType === 'positive' ? 'text-mint' : 'text-muted-foreground'
                           }`}>
                             {stat.change}
                           </span>
@@ -124,16 +194,16 @@ const Dashboard = () => {
             {/* Main Content Grid */}
             <div className="grid lg:grid-cols-3 gap-6">
               {/* Portfolio Chart */}
-              <Card className="lg:col-span-2 bg-slate-800/50 border-slate-700">
+              <Card className="lg:col-span-2 glass-effect border-mint/20 hover-mint-border transition-all duration-300 floating-chart">
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
+                  <CardTitle className="flex items-center justify-between gradient-text">
                     Portfolio Performance
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="border-slate-600">
+                      <Button variant="outline" size="sm" className="border-mint/50 hover-mint-border">
                         <Filter className="h-4 w-4 mr-2" />
                         Filter
                       </Button>
-                      <Button variant="outline" size="sm" className="border-slate-600">
+                      <Button variant="outline" size="sm" className="border-mint/50 hover-mint-border">
                         <Download className="h-4 w-4 mr-2" />
                         Export
                       </Button>
@@ -141,34 +211,34 @@ const Dashboard = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-64 bg-slate-900/50 rounded-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <PieChart className="h-12 w-12 text-slate-600 mx-auto mb-2" />
-                      <p className="text-slate-400">Portfolio chart will be displayed here</p>
-                    </div>
-                  </div>
+                  <TradingChart 
+                    type="area" 
+                    data={portfolioData} 
+                    height={300}
+                    animate={true}
+                  />
                 </CardContent>
               </Card>
 
               {/* Quick Actions */}
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
                 <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
+                  <CardTitle className="gradient-text">Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button className="w-full bg-emerald-600 hover:bg-emerald-700">
+                  <Button className="w-full bg-mint hover:bg-mint/80 text-dark-blue transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-mint/25">
                     <Plus className="h-4 w-4 mr-2" />
                     Add Trade
                   </Button>
-                  <Button variant="outline" className="w-full border-slate-600">
+                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border transition-all duration-300 hover:scale-105">
                     <Calendar className="h-4 w-4 mr-2" />
                     Plan Trade
                   </Button>
-                  <Button variant="outline" className="w-full border-slate-600">
+                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border transition-all duration-300 hover:scale-105">
                     <Target className="h-4 w-4 mr-2" />
                     Set Goal
                   </Button>
-                  <Button variant="outline" className="w-full border-slate-600">
+                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border transition-all duration-300 hover:scale-105">
                     <BarChart3 className="h-4 w-4 mr-2" />
                     View Analytics
                   </Button>
@@ -176,29 +246,47 @@ const Dashboard = () => {
               </Card>
             </div>
 
+            {/* Enhanced Features Row */}
+            <div className="grid lg:grid-cols-3 gap-6">
+              <WorldClock />
+              <GoalPlanningWidget />
+              <EconomicCalendar />
+            </div>
+
             {/* Recent Trades */}
-            <Card className="bg-slate-800/50 border-slate-700">
+            <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
               <CardHeader>
-                <CardTitle>Recent Trades</CardTitle>
+                <CardTitle className="gradient-text">Recent Trades</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {recentTrades.map((trade, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 bg-slate-900/50 rounded-lg">
+                    <div 
+                      key={index} 
+                      className="flex items-center justify-between p-4 bg-dark-blue/30 rounded-lg hover:bg-dark-blue/50 transition-all duration-300 hover:scale-102 animate-slide-up"
+                      style={{ animationDelay: `${index * 100}ms` }}
+                    >
                       <div className="flex items-center space-x-4">
-                        <Badge variant={trade.type === "LONG" ? "default" : "destructive"} className="w-16 justify-center">
+                        <Badge 
+                          variant={trade.type === "LONG" ? "default" : "destructive"} 
+                          className={`w-16 justify-center ${
+                            trade.type === "LONG" ? "bg-mint text-dark-blue" : ""
+                          }`}
+                        >
                           {trade.type}
                         </Badge>
                         <div>
                           <p className="font-semibold">{trade.symbol}</p>
-                          <p className="text-sm text-slate-400">{trade.date}</p>
+                          <p className="text-sm text-muted-foreground">{trade.date}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-slate-400">
+                        <p className="text-sm text-muted-foreground font-mono">
                           {trade.entry} → {trade.exit}
                         </p>
-                        <p className={`font-semibold ${trade.pnl.startsWith('+') ? 'text-emerald-400' : 'text-red-400'}`}>
+                        <p className={`font-semibold font-mono ${
+                          trade.pnl.startsWith('+') ? 'text-mint' : 'text-red-400'
+                        }`}>
                           {trade.pnl}
                         </p>
                       </div>
@@ -213,14 +301,14 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex">
+    <div ref={dashboardRef} className="min-h-screen bg-dark-blue text-foreground flex">
       <DashboardSidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
       <main className="flex-1 p-6 ml-64">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold mb-2">
+              <h1 className="text-3xl font-bold mb-2 gradient-text">
                 {activeTab === "overview" ? "Dashboard Overview" :
                  activeTab === "journal" ? "Trading Journal" :
                  activeTab === "portfolio" ? "Portfolio" :
@@ -228,7 +316,7 @@ const Dashboard = () => {
                  activeTab === "goals" ? "Goals & Planning" :
                  activeTab === "analytics" ? "Analytics" : "Dashboard"}
               </h1>
-              <p className="text-slate-400">
+              <p className="text-muted-foreground">
                 {activeTab === "overview" ? "Your trading performance at a glance" :
                  activeTab === "journal" ? "Track and analyze your trades" :
                  activeTab === "portfolio" ? "Monitor your portfolio performance" :
@@ -237,7 +325,7 @@ const Dashboard = () => {
                  activeTab === "analytics" ? "Deep dive into your trading analytics" : "Welcome back, trader"}
               </p>
             </div>
-            <Button className="bg-emerald-600 hover:bg-emerald-700">
+            <Button className="bg-mint hover:bg-mint/80 text-dark-blue transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-mint/25">
               <Plus className="h-4 w-4 mr-2" />
               Quick Add
             </Button>
