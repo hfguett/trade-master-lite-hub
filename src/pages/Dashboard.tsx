@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -110,8 +109,7 @@ const Dashboard = () => {
                         <div className="flex items-center mt-2">
                           {stat.icon}
                           <span className={`text-sm ml-1 ${
-                            stat.changeType === 'positive' ? 'text-emerald-400' :
-                            stat.changeType === 'negative' ? 'text-red-400' : 'text-slate-400'
+                            stat.changeType === 'positive' ? 'text-emerald-400' : 'text-slate-400'
                           }`}>
                             {stat.change}
                           </span>
