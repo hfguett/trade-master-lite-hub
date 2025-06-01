@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,12 +19,16 @@ import { DashboardSidebar } from "@/components/DashboardSidebar";
 import { TradingJournal } from "@/components/TradingJournal";
 import { PortfolioOverview } from "@/components/PortfolioOverview";
 import { MarketData } from "@/components/MarketData";
+import { WhaleTracker } from "@/components/WhaleTracker";
 import { GoalTracker } from "@/components/GoalTracker";
 import { AnalyticsDashboard } from "@/components/AnalyticsDashboard";
 import { DrawingJournal } from "@/components/DrawingJournal";
 import { NotesManager } from "@/components/NotesManager";
 import { ScreenshotManager } from "@/components/ScreenshotManager";
 import { DiagramBuilder } from "@/components/DiagramBuilder";
+import { ProfilePage } from "@/components/ProfilePage";
+import { SettingsPage } from "@/components/SettingsPage";
+import { NotificationsCenter } from "@/components/NotificationsCenter";
 import { TradingChart } from "@/components/ui/TradingChart";
 import { WorldClock } from "@/components/WorldClock";
 import { GoalPlanningWidget } from "@/components/GoalPlanningWidget";
@@ -36,8 +41,6 @@ gsap.registerPlugin(ScrollTrigger);
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const dashboardRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
-  const chartsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -163,6 +166,8 @@ const Dashboard = () => {
         return <PortfolioOverview />;
       case "market":
         return <MarketData />;
+      case "whale":
+        return <WhaleTracker />;
       case "goals":
         return <GoalTracker />;
       case "analytics":
@@ -175,11 +180,17 @@ const Dashboard = () => {
         return <ScreenshotManager />;
       case "diagrams":
         return <DiagramBuilder />;
+      case "profile":
+        return <ProfilePage />;
+      case "settings":
+        return <SettingsPage />;
+      case "notifications":
+        return <NotificationsCenter />;
       default:
         return (
           <div className="space-y-6 main-content">
             {/* Stats Grid */}
-            <div ref={statsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
                 <Card key={index} className="stat-card glass-effect border-mint/20 hover-mint-border transition-all duration-300 hover:scale-105">
                   <CardContent className="p-6">
@@ -316,13 +327,17 @@ const Dashboard = () => {
       overview: "Dashboard Overview",
       journal: "Trading Journal",
       portfolio: "Portfolio",
-      market: "Market Data", 
+      market: "Market Data",
+      whale: "Whale Tracker", 
       goals: "Goals & Planning",
       analytics: "Analytics",
       drawing: "Drawing Journal",
       notes: "Notes Manager",
       screenshots: "Screenshots",
-      diagrams: "Diagrams"
+      diagrams: "Diagrams",
+      profile: "Profile",
+      settings: "Settings",
+      notifications: "Notifications"
     };
     return titles[activeTab as keyof typeof titles] || "Dashboard";
   };
@@ -333,12 +348,16 @@ const Dashboard = () => {
       journal: "Track and analyze your trades",
       portfolio: "Monitor your portfolio performance",
       market: "Real-time market intelligence",
+      whale: "Monitor large blockchain transactions",
       goals: "Set and track your trading goals",
       analytics: "Deep dive into your trading analytics",
       drawing: "Sketch and analyze trade setups",
       notes: "Organize your trading notes and ideas",
       screenshots: "Manage trade confirmation screenshots",
-      diagrams: "Build trading strategy flow charts"
+      diagrams: "Build trading strategy flow charts",
+      profile: "Manage your trading profile and achievements",
+      settings: "Customize your trading experience",
+      notifications: "Stay updated with alerts and notifications"
     };
     return descriptions[activeTab as keyof typeof descriptions] || "Welcome back, trader";
   };

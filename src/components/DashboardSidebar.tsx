@@ -10,7 +10,11 @@ import {
   Pencil,
   StickyNote,
   Camera,
-  Workflow
+  Workflow,
+  Whale,
+  User,
+  Settings,
+  Bell
 } from "lucide-react";
 
 interface DashboardSidebarProps {
@@ -45,6 +49,12 @@ export const DashboardSidebar = ({ activeTab, onTabChange }: DashboardSidebarPro
       description: "Real-time data"
     },
     { 
+      id: "whale", 
+      label: "Whale Tracker", 
+      icon: <Whale className="h-4 w-4" />,
+      description: "Monitor large transactions"
+    },
+    { 
       id: "goals", 
       label: "Goals & Planning", 
       icon: <Target className="h-4 w-4" />,
@@ -56,7 +66,7 @@ export const DashboardSidebar = ({ activeTab, onTabChange }: DashboardSidebarPro
       icon: <BarChart3 className="h-4 w-4" />,
       description: "Performance analysis"
     },
-    // New productivity features
+    // Productivity features
     { 
       id: "drawing", 
       label: "Drawing Journal", 
@@ -80,6 +90,25 @@ export const DashboardSidebar = ({ activeTab, onTabChange }: DashboardSidebarPro
       label: "Diagrams", 
       icon: <Workflow className="h-4 w-4" />,
       description: "Build flow charts"
+    },
+    // User features
+    { 
+      id: "profile", 
+      label: "Profile", 
+      icon: <User className="h-4 w-4" />,
+      description: "Your trading profile"
+    },
+    { 
+      id: "notifications", 
+      label: "Notifications", 
+      icon: <Bell className="h-4 w-4" />,
+      description: "Alerts & updates"
+    },
+    { 
+      id: "settings", 
+      label: "Settings", 
+      icon: <Settings className="h-4 w-4" />,
+      description: "App preferences"
     }
   ];
 

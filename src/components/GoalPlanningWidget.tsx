@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Target, TrendingUp, Calendar, Zap, RefreshCw } from 'lucide-react';
+import { Target, TrendingUp, Calendar, Zap, RefreshCw, Sparkles } from 'lucide-react';
 
 interface Goal {
   id: string;
@@ -21,61 +21,176 @@ interface GoalSuggestion {
   description: string;
   category: 'performance' | 'risk' | 'learning' | 'discipline';
   difficulty: 'beginner' | 'intermediate' | 'advanced';
+  timeFrame: 'daily' | 'weekly' | 'monthly';
 }
 
 export const GoalPlanningWidget: React.FC = () => {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [suggestions, setSuggestions] = useState<GoalSuggestion[]>([]);
   const [currentSuggestion, setCurrentSuggestion] = useState(0);
+  const [dailySuggestions, setDailySuggestions] = useState<GoalSuggestion[]>([]);
 
-  const goalSuggestions: GoalSuggestion[] = [
+  const allGoalSuggestions: GoalSuggestion[] = [
+    // Performance Goals
     {
       title: "Achieve 70% Win Rate",
       description: "Maintain a consistent win rate above 70% for 30 consecutive trades",
       category: "performance",
-      difficulty: "intermediate"
+      difficulty: "intermediate",
+      timeFrame: "monthly"
     },
     {
-      title: "Risk Management Master",
-      description: "Never risk more than 2% of portfolio on a single trade for 3 months",
-      category: "risk",
-      difficulty: "beginner"
-    },
-    {
-      title: "Learn Technical Analysis",
-      description: "Master 5 key technical indicators and use them consistently",
-      category: "learning",
-      difficulty: "beginner"
-    },
-    {
-      title: "Daily Trading Journal",
-      description: "Document every trade with detailed analysis for 90 days",
-      category: "discipline",
-      difficulty: "beginner"
+      title: "Daily Profit Target",
+      description: "Earn $200 profit per trading day for one week",
+      category: "performance",
+      difficulty: "beginner",
+      timeFrame: "daily"
     },
     {
       title: "Monthly 15% Returns",
       description: "Achieve 15% monthly returns while maintaining risk discipline",
       category: "performance",
-      difficulty: "advanced"
+      difficulty: "advanced",
+      timeFrame: "monthly"
     },
     {
-      title: "Emotion Control Challenge",
-      description: "Complete 50 trades without deviating from your trading plan",
-      category: "discipline",
-      difficulty: "intermediate"
+      title: "Scalping Master",
+      description: "Complete 20 successful scalping trades in one session",
+      category: "performance",
+      difficulty: "advanced",
+      timeFrame: "daily"
     },
     {
-      title: "Market Analysis Expert",
-      description: "Analyze and predict market trends with 80% accuracy over 100 predictions",
-      category: "learning",
-      difficulty: "advanced"
+      title: "Swing Trading Success",
+      description: "Hold 5 swing positions for 3+ days with 80% success rate",
+      category: "performance",
+      difficulty: "intermediate",
+      timeFrame: "weekly"
+    },
+
+    // Risk Management Goals
+    {
+      title: "Risk Management Master",
+      description: "Never risk more than 2% of portfolio on a single trade for 3 months",
+      category: "risk",
+      difficulty: "beginner",
+      timeFrame: "monthly"
+    },
+    {
+      title: "Stop Loss Discipline",
+      description: "Honor every stop loss without moving it for 50 trades",
+      category: "risk",
+      difficulty: "intermediate",
+      timeFrame: "weekly"
     },
     {
       title: "Portfolio Diversification",
       description: "Maintain balanced exposure across 5 different asset classes",
       category: "risk",
-      difficulty: "intermediate"
+      difficulty: "intermediate",
+      timeFrame: "monthly"
+    },
+    {
+      title: "Maximum Drawdown Control",
+      description: "Keep maximum daily drawdown under 5% for one month",
+      category: "risk",
+      difficulty: "intermediate",
+      timeFrame: "daily"
+    },
+    {
+      title: "Position Sizing Excellence",
+      description: "Calculate proper position size for every trade based on volatility",
+      category: "risk",
+      difficulty: "beginner",
+      timeFrame: "daily"
+    },
+
+    // Learning Goals
+    {
+      title: "Learn Technical Analysis",
+      description: "Master 5 key technical indicators and use them consistently",
+      category: "learning",
+      difficulty: "beginner",
+      timeFrame: "weekly"
+    },
+    {
+      title: "Market Analysis Expert",
+      description: "Analyze and predict market trends with 80% accuracy over 100 predictions",
+      category: "learning",
+      difficulty: "advanced",
+      timeFrame: "monthly"
+    },
+    {
+      title: "News Trading Strategy",
+      description: "Develop and test a profitable news-based trading strategy",
+      category: "learning",
+      difficulty: "intermediate",
+      timeFrame: "weekly"
+    },
+    {
+      title: "Crypto Fundamentals",
+      description: "Research and understand fundamentals of 10 different cryptocurrencies",
+      category: "learning",
+      difficulty: "beginner",
+      timeFrame: "weekly"
+    },
+    {
+      title: "Options Trading Basics",
+      description: "Learn and execute 5 different options trading strategies",
+      category: "learning",
+      difficulty: "advanced",
+      timeFrame: "monthly"
+    },
+
+    // Discipline Goals
+    {
+      title: "Daily Trading Journal",
+      description: "Document every trade with detailed analysis for 90 days",
+      category: "discipline",
+      difficulty: "beginner",
+      timeFrame: "daily"
+    },
+    {
+      title: "Emotion Control Challenge",
+      description: "Complete 50 trades without deviating from your trading plan",
+      category: "discipline",
+      difficulty: "intermediate",
+      timeFrame: "weekly"
+    },
+    {
+      title: "Morning Routine Master",
+      description: "Complete market analysis routine before trading for 30 days",
+      category: "discipline",
+      difficulty: "beginner",
+      timeFrame: "daily"
+    },
+    {
+      title: "No FOMO Trading",
+      description: "Avoid FOMO trades for 2 weeks straight",
+      category: "discipline",
+      difficulty: "intermediate",
+      timeFrame: "daily"
+    },
+    {
+      title: "Trading Schedule Adherence",
+      description: "Stick to predetermined trading hours for one month",
+      category: "discipline",
+      difficulty: "beginner",
+      timeFrame: "daily"
+    },
+    {
+      title: "Screen Time Management",
+      description: "Limit trading screen time to 6 hours per day for 2 weeks",
+      category: "discipline",
+      difficulty: "intermediate",
+      timeFrame: "daily"
+    },
+    {
+      title: "Weekend Trading Break",
+      description: "Take complete breaks from trading every weekend for one month",
+      category: "discipline",
+      difficulty: "beginner",
+      timeFrame: "weekly"
     }
   ];
 
@@ -103,27 +218,35 @@ export const GoalPlanningWidget: React.FC = () => {
     ];
     
     setGoals(sampleGoals);
-    setSuggestions(goalSuggestions);
+    setSuggestions(allGoalSuggestions);
+    
+    // Set daily suggestions (rotate every day)
+    const today = new Date().getDay();
+    const dailyGoals = allGoalSuggestions.filter(g => g.timeFrame === 'daily');
+    const rotatedDailyGoals = [...dailyGoals.slice(today), ...dailyGoals.slice(0, today)];
+    setDailySuggestions(rotatedDailyGoals.slice(0, 3));
   }, []);
 
   const getNextSuggestion = () => {
     setCurrentSuggestion((prev) => (prev + 1) % suggestions.length);
   };
 
-  const addSuggestionAsGoal = () => {
-    const suggestion = suggestions[currentSuggestion];
+  const addSuggestionAsGoal = (suggestion?: GoalSuggestion) => {
+    const goalToAdd = suggestion || suggestions[currentSuggestion];
     const newGoal: Goal = {
       id: Date.now().toString(),
-      title: suggestion.title,
-      description: suggestion.description,
+      title: goalToAdd.title,
+      description: goalToAdd.description,
       progress: 0,
-      target: suggestion.difficulty === 'beginner' ? 30 : suggestion.difficulty === 'intermediate' ? 60 : 100,
+      target: goalToAdd.difficulty === 'beginner' ? 30 : goalToAdd.difficulty === 'intermediate' ? 60 : 100,
       deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      category: suggestion.category
+      category: goalToAdd.category
     };
     
     setGoals(prev => [...prev, newGoal]);
-    getNextSuggestion();
+    if (!suggestion) {
+      getNextSuggestion();
+    }
   };
 
   const getCategoryColor = (category: string) => {
@@ -145,9 +268,65 @@ export const GoalPlanningWidget: React.FC = () => {
     }
   };
 
+  const getTimeFrameIcon = (timeFrame: string) => {
+    switch (timeFrame) {
+      case 'daily': return '📅';
+      case 'weekly': return '📊';
+      case 'monthly': return '🎯';
+      default: return '⏰';
+    }
+  };
+
   return (
     <div className="space-y-6">
-      {/* Goal Suggestions */}
+      {/* Daily Goal Suggestions */}
+      <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-mint">
+            <Sparkles className="h-5 w-5" />
+            Today's Goal Suggestions
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {dailySuggestions.map((suggestion, index) => (
+              <div 
+                key={index}
+                className="p-3 rounded-lg bg-dark-blue/30 border border-mint/20 hover:bg-dark-blue/50 transition-all duration-200"
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg">{getTimeFrameIcon(suggestion.timeFrame)}</span>
+                      <h4 className="font-medium text-sm">{suggestion.title}</h4>
+                    </div>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      {suggestion.description}
+                    </p>
+                    <div className="flex gap-1">
+                      <Badge className={`${getCategoryColor(suggestion.category)} text-xs`}>
+                        {suggestion.category}
+                      </Badge>
+                      <Badge variant="outline" className={`${getDifficultyColor(suggestion.difficulty)} text-xs`}>
+                        {suggestion.difficulty}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+                <Button 
+                  size="sm"
+                  onClick={() => addSuggestionAsGoal(suggestion)}
+                  className="w-full bg-mint hover:bg-mint/80 text-dark-blue text-xs h-8"
+                >
+                  Add Goal
+                </Button>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Smart Goal Suggestions */}
       <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center gap-2 text-mint">
@@ -160,7 +339,10 @@ export const GoalPlanningWidget: React.FC = () => {
             <div className="p-4 rounded-lg bg-dark-blue/30 border border-mint/20">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
-                  <h3 className="font-semibold text-lg mb-2">{suggestions[currentSuggestion].title}</h3>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xl">{getTimeFrameIcon(suggestions[currentSuggestion].timeFrame)}</span>
+                    <h3 className="font-semibold text-lg">{suggestions[currentSuggestion].title}</h3>
+                  </div>
                   <p className="text-sm text-muted-foreground mb-3">
                     {suggestions[currentSuggestion].description}
                   </p>
@@ -171,12 +353,15 @@ export const GoalPlanningWidget: React.FC = () => {
                     <Badge variant="outline" className={getDifficultyColor(suggestions[currentSuggestion].difficulty)}>
                       {suggestions[currentSuggestion].difficulty}
                     </Badge>
+                    <Badge variant="outline" className="text-mint border-mint">
+                      {suggestions[currentSuggestion].timeFrame}
+                    </Badge>
                   </div>
                 </div>
               </div>
               <div className="flex gap-2">
                 <Button 
-                  onClick={addSuggestionAsGoal}
+                  onClick={() => addSuggestionAsGoal()}
                   className="bg-mint hover:bg-mint/80 text-dark-blue"
                 >
                   <Target className="h-4 w-4 mr-2" />
