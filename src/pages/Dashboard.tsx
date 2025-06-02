@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +21,8 @@ import { MarketData } from "@/components/MarketData";
 import { WhaleTracker } from "@/components/WhaleTracker";
 import { GoalTracker } from "@/components/GoalTracker";
 import { AnalyticsDashboard } from "@/components/AnalyticsDashboard";
+import { EnhancedDrawingJournal } from "@/components/EnhancedDrawingJournal";
+import { AISuggestions } from "@/components/AISuggestions";
 import { DrawingJournal } from "@/components/DrawingJournal";
 import { NotesManager } from "@/components/NotesManager";
 import { ScreenshotManager } from "@/components/ScreenshotManager";
@@ -173,7 +174,9 @@ const Dashboard = () => {
       case "analytics":
         return <AnalyticsDashboard />;
       case "drawing":
-        return <DrawingJournal />;
+        return <EnhancedDrawingJournal />;
+      case "ai-suggestions":
+        return <AISuggestions />;
       case "notes":
         return <NotesManager />;
       case "screenshots":

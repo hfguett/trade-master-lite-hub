@@ -11,10 +11,11 @@ import {
   StickyNote,
   Camera,
   Workflow,
-  Whale,
+  Fish,
   User,
   Settings,
-  Bell
+  Bell,
+  Brain
 } from "lucide-react";
 
 interface DashboardSidebarProps {
@@ -51,7 +52,7 @@ export const DashboardSidebar = ({ activeTab, onTabChange }: DashboardSidebarPro
     { 
       id: "whale", 
       label: "Whale Tracker", 
-      icon: <Whale className="h-4 w-4" />,
+      icon: <Fish className="h-4 w-4" />,
       description: "Monitor large transactions"
     },
     { 

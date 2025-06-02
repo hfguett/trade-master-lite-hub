@@ -1,370 +1,276 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import { 
-  Whale, 
+  Fish, 
+  ExternalLink, 
+  Copy, 
+  Plus, 
   TrendingUp, 
-  TrendingDown, 
-  Search, 
-  RefreshCw, 
-  AlertTriangle,
-  Eye,
-  Filter
+  TrendingDown,
+  DollarSign,
+  Clock,
+  Wallet
 } from 'lucide-react';
 
-interface WhaleTransaction {
-  id: string;
-  hash: string;
-  from: string;
-  to: string;
-  amount: number;
-  token: string;
-  usdValue: number;
-  timestamp: Date;
-  type: 'buy' | 'sell' | 'transfer';
-  exchange?: string;
+interface WalletData {
+  address: string;
+  name: string;
+  balance: number;
+  tokens: { [key: string]: number };
+  transactions: Transaction[];
 }
 
-interface WhaleWallet {
-  address: string;
-  balance: number;
-  usdValue: number;
-  tokens: { symbol: string; amount: number; value: number }[];
-  lastActivity: Date;
-  reputation: number;
-  isTracked: boolean;
+interface Transaction {
+  id: string;
+  timestamp: Date;
+  type: 'transfer' | 'trade' | 'mint' | 'burn';
+  amount: number;
+  token: string;
+  from: string;
+  to: string;
 }
 
 export const WhaleTracker = () => {
-  const [whaleTransactions, setWhaleTransactions] = useState<WhaleTransaction[]>([]);
-  const [whaleWallets, setWhaleWallets] = useState<WhaleWallet[]>([]);
-  const [searchAddress, setSearchAddress] = useState('');
-  const [selectedTimeframe, setSelectedTimeframe] = useState('24h');
-  const [minTransactionValue, setMinTransactionValue] = useState(100000);
+  const [wallets, setWallets] = useState<WalletData[]>([]);
+  const [newWalletAddress, setNewWalletAddress] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock data for demonstration
   useEffect(() => {
-    const mockTransactions: WhaleTransaction[] = [
-      {
-        id: '1',
-        hash: '4k2j3h4k2j3h4k2j3h4k2j3h4k2j3h4k2j3h4k2j3h4k2j3h4k2j3h4k2j3h4k',
-        from: '7xKD...9mP2',
-        to: 'Raydium',
-        amount: 50000,
-        token: 'SOL',
-        usdValue: 2500000,
-        timestamp: new Date(Date.now() - 1000 * 60 * 15),
-        type: 'buy',
-        exchange: 'Raydium'
-      },
-      {
-        id: '2',
-        hash: '5l3k4j5l3k4j5l3k4j5l3k4j5l3k4j5l3k4j5l3k4j5l3k4j5l3k4j5l3k4j5l',
-        from: 'Jupiter',
-        to: '9mN8...7kL4',
-        amount: 1200000,
-        token: 'USDC',
-        usdValue: 1200000,
-        timestamp: new Date(Date.now() - 1000 * 60 * 30),
-        type: 'sell',
-        exchange: 'Jupiter'
-      },
-      {
-        id: '3',
-        hash: '6n4l5k6n4l5k6n4l5k6n4l5k6n4l5k6n4l5k6n4l5k6n4l5k6n4l5k6n4l5k6n',
-        from: '3jK9...8nM5',
-        to: '8pL2...6kJ7',
-        amount: 25000,
-        token: 'SOL',
-        usdValue: 1250000,
-        timestamp: new Date(Date.now() - 1000 * 60 * 45),
-        type: 'transfer'
-      }
-    ];
-
-    const mockWallets: WhaleWallet[] = [
-      {
-        address: '7xKD...9mP2',
-        balance: 125000,
-        usdValue: 6250000,
-        tokens: [
-          { symbol: 'SOL', amount: 100000, value: 5000000 },
-          { symbol: 'USDC', amount: 1250000, value: 1250000 }
-        ],
-        lastActivity: new Date(Date.now() - 1000 * 60 * 15),
-        reputation: 95,
-        isTracked: true
-      },
-      {
-        address: '9mN8...7kL4',
-        balance: 89000,
-        usdValue: 4450000,
-        tokens: [
-          { symbol: 'SOL', amount: 75000, value: 3750000 },
-          { symbol: 'RAY', amount: 50000, value: 700000 }
-        ],
-        lastActivity: new Date(Date.now() - 1000 * 60 * 30),
-        reputation: 88,
-        isTracked: false
-      }
-    ];
-
-    setWhaleTransactions(mockTransactions);
-    setWhaleWallets(mockWallets);
+    // Load wallets from local storage or default state
+    const storedWallets = localStorage.getItem('whaleWallets');
+    if (storedWallets) {
+      setWallets(JSON.parse(storedWallets));
+    } else {
+      setWallets([
+        {
+          address: '6w96Jq7m8wY96PspGfEwzhF9HqGjeVPx4Qe6Tj9Y1CzW',
+          name: 'Example Whale 1',
+          balance: 123456789,
+          tokens: {
+            SOL: 12345,
+            USDC: 67890,
+            BONK: 123456789
+          },
+          transactions: [
+            {
+              id: 'tx1',
+              timestamp: new Date(Date.now() - 1000 * 60 * 5),
+              type: 'transfer',
+              amount: 1000,
+              token: 'SOL',
+              from: 'walletA',
+              to: 'walletB'
+            },
+            {
+              id: 'tx2',
+              timestamp: new Date(Date.now() - 1000 * 60 * 15),
+              type: 'trade',
+              amount: 50000,
+              token: 'USDC',
+              from: 'walletC',
+              to: 'walletD'
+            }
+          ]
+        }
+      ]);
+    }
   }, []);
 
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 4)}...${address.slice(-4)}`;
-  };
+  useEffect(() => {
+    // Save wallets to local storage whenever it changes
+    localStorage.setItem('whaleWallets', JSON.stringify(wallets));
+  }, [wallets]);
 
-  const formatTimeAgo = (date: Date) => {
-    const minutes = Math.floor((Date.now() - date.getTime()) / (1000 * 60));
-    if (minutes < 60) return `${minutes}m ago`;
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours}h ago`;
-    return `${Math.floor(hours / 24)}d ago`;
-  };
+  const addWallet = async () => {
+    setIsLoading(true);
+    setError(null);
 
-  const getTransactionIcon = (type: string) => {
-    switch (type) {
-      case 'buy': return <TrendingUp className="h-4 w-4 text-mint" />;
-      case 'sell': return <TrendingDown className="h-4 w-4 text-red-400" />;
-      default: return <Eye className="h-4 w-4 text-blue-400" />;
+    // Basic address validation
+    if (!newWalletAddress.trim()) {
+      setError('Please enter a valid Solana wallet address.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // Simulate fetching wallet data from Solana blockchain
+      const walletData: WalletData = {
+        address: newWalletAddress,
+        name: `Wallet ${wallets.length + 2}`,
+        balance: Math.floor(Math.random() * 10000),
+        tokens: {
+          SOL: Math.floor(Math.random() * 5000),
+          USDC: Math.floor(Math.random() * 100000),
+          BONK: Math.floor(Math.random() * 10000000)
+        },
+        transactions: [
+          {
+            id: `tx${Date.now()}`,
+            timestamp: new Date(),
+            type: 'transfer',
+            amount: Math.floor(Math.random() * 1000),
+            token: 'SOL',
+            from: 'userWallet',
+            to: newWalletAddress
+          }
+        ]
+      };
+
+      setWallets(prev => [...prev, walletData]);
+      setNewWalletAddress('');
+    } catch (err: any) {
+      setError(`Failed to fetch wallet data: ${err.message}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const toggleWalletTracking = (address: string) => {
-    setWhaleWallets(prev => prev.map(wallet => 
-      wallet.address === address 
-        ? { ...wallet, isTracked: !wallet.isTracked }
-        : wallet
-    ));
+  const removeWallet = (address: string) => {
+    setWallets(prev => prev.filter(wallet => wallet.address !== address));
+  };
+
+  const copyAddress = (address: string) => {
+    navigator.clipboard.writeText(address);
+    alert('Wallet address copied to clipboard!');
+  };
+
+  const formatNumber = (num: number) => {
+    return num.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold gradient-text mb-2">Whale Tracker</h2>
-          <p className="text-muted-foreground">Monitor large transactions and whale wallets on Solana</p>
-        </div>
-        <div className="flex gap-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-            <Input 
-              placeholder="Search wallet address..." 
-              value={searchAddress}
-              onChange={(e) => setSearchAddress(e.target.value)}
-              className="pl-10 bg-slate-800 border-slate-600 w-64" 
-            />
+      <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="gradient-text flex items-center gap-2">
+              <Fish className="h-5 w-5" />
+              Solana Whale Tracker
+            </CardTitle>
           </div>
-          <Button variant="outline" size="sm" className="border-mint/50 hover-mint-border">
-            <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
-          </Button>
-        </div>
-      </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center gap-4">
+            <Input
+              type="text"
+              placeholder="Enter Solana wallet address..."
+              value={newWalletAddress}
+              onChange={(e) => setNewWalletAddress(e.target.value)}
+              className="bg-slate-700 border-slate-600"
+            />
+            <Button 
+              onClick={addWallet} 
+              disabled={isLoading}
+              className="bg-mint hover:bg-mint/80 text-dark-blue"
+            >
+              {isLoading ? 'Adding...' : <Plus className="h-4 w-4 mr-2" />}
+              Track Wallet
+            </Button>
+          </div>
+          {error && <p className="text-red-500">{error}</p>}
+        </CardContent>
+      </Card>
 
-      <Tabs defaultValue="transactions" className="space-y-6">
-        <TabsList className="bg-slate-800">
-          <TabsTrigger value="transactions">Live Transactions</TabsTrigger>
-          <TabsTrigger value="wallets">Whale Wallets</TabsTrigger>
-          <TabsTrigger value="alerts">Alerts & Filters</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="transactions" className="space-y-6">
-          <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {wallets.map((wallet) => (
+          <Card key={wallet.address} className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2 text-mint">
-                  <Whale className="h-5 w-5" />
-                  Large Transactions (${minTransactionValue.toLocaleString()}+)
-                </CardTitle>
-                <div className="flex gap-2">
-                  <Input
-                    type="number"
-                    placeholder="Min value (USD)"
-                    value={minTransactionValue}
-                    onChange={(e) => setMinTransactionValue(Number(e.target.value))}
-                    className="w-32 bg-slate-800 border-slate-600"
-                  />
-                  <Button variant="outline" size="sm" className="border-mint/50 hover-mint-border">
-                    <Filter className="h-4 w-4 mr-2" />
-                    Filter
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {whaleTransactions.map((tx, index) => (
-                  <div 
-                    key={tx.id}
-                    className="p-4 bg-dark-blue/30 rounded-lg hover:bg-dark-blue/50 transition-all duration-300 animate-slide-up"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                <CardTitle className="text-lg font-semibold text-mint">{wallet.name}</CardTitle>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => removeWallet(wallet.address)}
+                  className="h-8 w-8 p-0 hover:bg-red-500/20 text-red-400"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-trash-2"
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        {getTransactionIcon(tx.type)}
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-semibold">{formatAddress(tx.from)}</span>
-                            <span className="text-slate-400">→</span>
-                            <span className="font-semibold">{formatAddress(tx.to)}</span>
-                            {tx.exchange && (
-                              <Badge variant="outline" className="text-xs">
-                                {tx.exchange}
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-sm text-muted-foreground font-mono">
-                            {tx.hash.slice(0, 20)}...
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-semibold font-mono">
-                          {tx.amount.toLocaleString()} {tx.token}
-                        </p>
-                        <p className="text-sm text-mint font-mono">
-                          ${tx.usdValue.toLocaleString()}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {formatTimeAgo(tx.timestamp)}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                    <path d="M3 6h18" />
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                    <line x1="10" x2="10" y1="11" y2="17" />
+                    <line x1="14" x2="14" y1="11" y2="17" />
+                  </svg>
+                </Button>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="wallets" className="space-y-6">
-          <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-mint">
-                <Eye className="h-5 w-5" />
-                Whale Wallets
-              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {whaleWallets.map((wallet, index) => (
-                  <div 
-                    key={wallet.address}
-                    className="p-4 bg-dark-blue/30 rounded-lg hover:bg-dark-blue/50 transition-all duration-300"
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center space-x-4">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="font-semibold font-mono">{formatAddress(wallet.address)}</span>
-                            <Badge 
-                              variant={wallet.reputation > 90 ? "default" : "secondary"}
-                              className={wallet.reputation > 90 ? "bg-mint text-dark-blue" : ""}
-                            >
-                              Rep: {wallet.reputation}%
-                            </Badge>
-                            {wallet.isTracked && (
-                              <Badge variant="outline" className="text-mint border-mint">
-                                Tracked
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            Last activity: {formatTimeAgo(wallet.lastActivity)}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-lg gradient-text">
-                          ${wallet.usdValue.toLocaleString()}
-                        </p>
-                        <Button
-                          variant={wallet.isTracked ? "default" : "outline"}
-                          size="sm"
-                          onClick={() => toggleWalletTracking(wallet.address)}
-                          className={wallet.isTracked ? "bg-mint text-dark-blue" : "border-mint/50 hover-mint-border"}
-                        >
-                          {wallet.isTracked ? 'Untrack' : 'Track'}
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {wallet.tokens.map((token, tokenIndex) => (
-                        <div key={tokenIndex} className="text-center p-2 bg-slate-900/50 rounded">
-                          <p className="text-xs text-slate-400">{token.symbol}</p>
-                          <p className="font-mono text-sm">{token.amount.toLocaleString()}</p>
-                          <p className="text-xs text-mint">${token.value.toLocaleString()}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+            <CardContent className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Wallet className="h-4 w-4 text-mint" />
+                  <span className="text-sm text-slate-400">Address:</span>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={() => copyAddress(wallet.address)}
+                  className="h-8 w-8 p-0 hover:bg-mint/20"
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+              <p className="text-xs text-slate-500 break-all">{wallet.address}</p>
 
-        <TabsContent value="alerts" className="space-y-6">
-          <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-mint">
-                <AlertTriangle className="h-5 w-5" />
-                Whale Alert Settings
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm text-slate-400 mb-2 block">Minimum Transaction Value (USD)</label>
-                  <Input
-                    type="number"
-                    value={minTransactionValue}
-                    onChange={(e) => setMinTransactionValue(Number(e.target.value))}
-                    className="bg-slate-800 border-slate-600"
-                  />
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <DollarSign className="h-4 w-4 text-mint" />
+                  <span className="text-sm text-slate-400">Balance:</span>
                 </div>
-                <div>
-                  <label className="text-sm text-slate-400 mb-2 block">Alert Timeframe</label>
-                  <div className="flex gap-2">
-                    {['1h', '4h', '24h', '7d'].map((tf) => (
-                      <Button
-                        key={tf}
-                        variant={selectedTimeframe === tf ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setSelectedTimeframe(tf)}
-                        className={selectedTimeframe === tf ? "bg-mint text-dark-blue" : "border-mint/50 hover-mint-border"}
-                      >
-                        {tf}
-                      </Button>
-                    ))}
-                  </div>
+                <span className="text-sm text-foreground">{formatNumber(wallet.balance)} SOL</span>
+              </div>
+
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold text-slate-300">Top Tokens:</h4>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(wallet.tokens).slice(0, 3).map(([token, amount]) => (
+                    <Badge key={token} variant="secondary" className="text-xs border-mint/30 text-mint">
+                      {token}: {formatNumber(amount)}
+                    </Badge>
+                  ))}
                 </div>
               </div>
-              <div className="pt-4 border-t border-slate-700">
-                <h4 className="font-semibold mb-3">Active Alerts</h4>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between p-3 bg-slate-900/50 rounded">
-                    <span className="text-sm">Large SOL transactions (&gt; $1M)</span>
-                    <Badge variant="outline" className="text-mint border-mint">Active</Badge>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-slate-900/50 rounded">
-                    <span className="text-sm">New whale wallet detected</span>
-                    <Badge variant="outline" className="text-mint border-mint">Active</Badge>
-                  </div>
-                </div>
+
+              <div className="space-y-2">
+                <h4 className="text-sm font-semibold text-slate-300 flex items-center gap-1">
+                  <Clock className="h-3 w-3" />
+                  Recent Transactions:
+                </h4>
+                <ul className="space-y-1">
+                  {wallet.transactions.slice(0, 3).map((tx) => (
+                    <li key={tx.id} className="text-xs text-slate-400 flex items-center justify-between">
+                      <span>{tx.type}</span>
+                      <span>{formatNumber(tx.amount)} {tx.token}</span>
+                      <span className="text-slate-500">{tx.timestamp.toLocaleTimeString()}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
+
+              <Button variant="link" className="w-full justify-start text-sm">
+                <ExternalLink className="h-4 w-4 mr-2" />
+                View More Details
+              </Button>
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+        ))}
+      </div>
     </div>
   );
 };
