@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, TrendingDown, RefreshCw, Search, Star, Zap, AlertTriangle } from "lucide-react";
+import { TrendingUp, TrendingDown, RefreshCw, Search, Star, Zap, AlertTriangle, Activity, DollarSign, BarChart3, Globe, Clock, Wifi, WifiOff, Target } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 export const MarketData = () => {
   const [selectedTimeframe, setSelectedTimeframe] = useState("1h");
+  const [connectionStatus, setConnectionStatus] = useState("connected");
+  const [marketSentiment, setMarketSentiment] = useState(72);
   
   const marketData = [
     {
@@ -18,7 +20,10 @@ export const MarketData = () => {
       changePercent: 5.72,
       volume: "2.1B",
       high24h: 44120.00,
-      low24h: 41850.00
+      low24h: 41850.00,
+      marketCap: "847.2B",
+      dominance: "42.3%",
+      fear_greed: 74
     },
     {
       symbol: "ETH/USDT", 
@@ -28,17 +33,10 @@ export const MarketData = () => {
       changePercent: -1.20,
       volume: "1.8B",
       high24h: 2720.00,
-      low24h: 2580.00
-    },
-    {
-      symbol: "ADA/USDT",
-      name: "Cardano", 
-      price: 0.485,
-      change: 0.012,
-      changePercent: 2.53,
-      volume: "245M",
-      high24h: 0.492,
-      low24h: 0.461
+      low24h: 2580.00,
+      marketCap: "318.7B",
+      dominance: "18.2%",
+      fear_greed: 68
     },
     {
       symbol: "SOL/USDT",
@@ -48,8 +46,43 @@ export const MarketData = () => {
       changePercent: 4.47,
       volume: "890M",
       high24h: 102.30,
-      low24h: 92.15
+      low24h: 92.15,
+      marketCap: "45.8B",
+      dominance: "2.1%",
+      fear_greed: 81
+    },
+    {
+      symbol: "ADA/USDT",
+      name: "Cardano", 
+      price: 0.485,
+      change: 0.012,
+      changePercent: 2.53,
+      volume: "245M",
+      high24h: 0.492,
+      low24h: 0.461,
+      marketCap: "17.2B",
+      dominance: "0.8%",
+      fear_greed: 65
     }
+  ];
+
+  const heatmapData = [
+    { name: "DeFi", change: 12.4, size: 340 },
+    { name: "Gaming", change: -8.2, size: 180 },
+    { name: "NFTs", change: 5.7, size: 120 },
+    { name: "Layer 1", change: 15.3, size: 890 },
+    { name: "Layer 2", change: 8.9, size: 245 },
+    { name: "Meme", change: -15.6, size: 67 },
+    { name: "AI Tokens", change: 28.4, size: 156 },
+    { name: "RWA", change: 11.2, size: 89 }
+  ];
+
+  const topMovers = [
+    { symbol: "RNDR", change: 45.2, price: 12.34, volume: "234M" },
+    { symbol: "OCEAN", change: 38.7, price: 0.89, volume: "156M" },
+    { symbol: "FET", change: 32.1, price: 2.45, volume: "198M" },
+    { symbol: "AGIX", change: -28.4, price: 0.67, volume: "123M" },
+    { symbol: "SAND", change: -22.1, price: 0.78, volume: "89M" }
   ];
 
   const economicEvents = [
@@ -127,32 +160,18 @@ export const MarketData = () => {
     }
   ];
 
-  const orderBookData = {
-    bids: [
-      { price: 43245.50, amount: 2.5, total: 108113.75 },
-      { price: 43240.00, amount: 1.8, total: 77832.00 },
-      { price: 43235.25, amount: 3.2, total: 138352.80 },
-      { price: 43230.10, amount: 0.9, total: 38907.09 },
-      { price: 43225.75, amount: 4.1, total: 177225.58 }
-    ],
-    asks: [
-      { price: 43250.75, amount: 1.6, total: 69201.20 },
-      { price: 43255.25, amount: 2.3, total: 99487.08 },
-      { price: 43260.00, amount: 1.9, total: 82194.00 },
-      { price: 43265.50, amount: 3.4, total: 147102.70 },
-      { price: 43270.25, amount: 2.1, total: 90867.53 }
-    ]
-  };
+  const dexMetrics = [
+    { name: "Uniswap V3", volume: "2.8B", fees: "8.4M", pairs: 12450 },
+    { name: "PancakeSwap", volume: "1.2B", fees: "3.6M", pairs: 8930 },
+    { name: "SushiSwap", volume: "450M", fees: "1.3M", pairs: 5670 },
+    { name: "Curve", volume: "890M", fees: "2.1M", pairs: 890 }
+  ];
 
-  const topExchanges = [
-    { name: "Binance", volume: "15.2B", change: "+2.1%", pairs: 1200, status: "connected" },
-    { name: "Coinbase", volume: "8.9B", change: "+1.8%", pairs: 180, status: "connected" },
-    { name: "Kraken", volume: "2.1B", change: "-0.5%", pairs: 120, status: "connected" },
-    { name: "Bybit", volume: "12.4B", change: "+3.2%", pairs: 800, status: "connected" },
-    { name: "OKX", volume: "9.8B", change: "+1.9%", pairs: 600, status: "connected" },
-    { name: "KuCoin", volume: "3.5B", change: "+0.8%", pairs: 450, status: "connected" },
-    { name: "Huobi", volume: "2.8B", change: "-1.2%", pairs: 320, status: "connecting" },
-    { name: "Gate.io", volume: "1.9B", change: "+2.5%", pairs: 280, status: "connected" }
+  const onChainMetrics = [
+    { metric: "Active Addresses", value: "1.2M", change: "+8.4%" },
+    { metric: "Transaction Count", value: "890K", change: "+12.7%" },
+    { metric: "Gas Price (Gwei)", value: "45", change: "-15.2%" },
+    { metric: "ETH Burned", value: "12.4K", change: "+5.3%" }
   ];
 
   const formatTimeAgo = (date: Date) => {
@@ -165,34 +184,243 @@ export const MarketData = () => {
 
   const timeframes = ["1m", "5m", "15m", "1h", "4h", "1d"];
 
+  useEffect(() => {
+    // Simulate connection status changes
+    const interval = setInterval(() => {
+      setConnectionStatus(Math.random() > 0.95 ? "reconnecting" : "connected");
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="space-y-6">
-      <Tabs defaultValue="watchlist" className="space-y-6">
-        <div className="flex items-center justify-between">
-          <TabsList className="bg-slate-800">
-            <TabsTrigger value="watchlist">Watchlist</TabsTrigger>
-            <TabsTrigger value="charts">Charts</TabsTrigger>
-            <TabsTrigger value="orderbook">Order Book</TabsTrigger>
-            <TabsTrigger value="liquidations">Liquidations</TabsTrigger>
-            <TabsTrigger value="exchanges">Exchanges</TabsTrigger>
-            <TabsTrigger value="calendar">Economic Calendar</TabsTrigger>
-            <TabsTrigger value="news">News</TabsTrigger>
-          </TabsList>
-          
-          <div className="flex gap-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-              <Input 
-                placeholder="Search symbols..." 
-                className="pl-10 bg-slate-800 border-slate-600 w-64" 
-              />
-            </div>
-            <Button variant="outline" size="sm" className="border-mint/50 hover-mint-border">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
-            </Button>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            {connectionStatus === "connected" ? (
+              <Wifi className="h-5 w-5 text-mint" />
+            ) : (
+              <WifiOff className="h-5 w-5 text-yellow-400" />
+            )}
+            <span className="text-sm text-muted-foreground capitalize">
+              {connectionStatus}
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Activity className="h-4 w-4 text-mint" />
+            <span className="text-sm">Market Sentiment: </span> 
+            <Badge variant={marketSentiment > 50 ? "default" : "destructive"} className="mint-button text-xs">
+              {marketSentiment}% {marketSentiment > 50 ? "Bullish" : "Bearish"}
+            </Badge>
           </div>
         </div>
+        
+        <div className="flex gap-2">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Input 
+              placeholder="Search symbols..." 
+              className="pl-10 bg-darkest-blue border-mint/30 w-64 glass-effect" 
+            />
+          </div>
+          <Button className="mint-button">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh
+          </Button>
+        </div>
+      </div>
+
+      <Tabs defaultValue="overview" className="space-y-6">
+        <TabsList className="bg-darkest-blue border border-mint/20">
+          <TabsTrigger value="overview" className="data-[state=active]:bg-mint data-[state=active]:text-darkest-blue">Overview</TabsTrigger>
+          <TabsTrigger value="watchlist" className="data-[state=active]:bg-mint data-[state=active]:text-darkest-blue">Watchlist</TabsTrigger>
+          <TabsTrigger value="heatmap" className="data-[state=active]:bg-mint data-[state=active]:text-darkest-blue">Heatmap</TabsTrigger>
+          <TabsTrigger value="defi" className="data-[state=active]:bg-mint data-[state=active]:text-darkest-blue">DeFi</TabsTrigger>
+          <TabsTrigger value="onchain" className="data-[state=active]:bg-mint data-[state=active]:text-darkest-blue">On-Chain</TabsTrigger>
+          <TabsTrigger value="orderbook" className="data-[state=active]:bg-mint data-[state=active]:text-darkest-blue">Order Book</TabsTrigger>
+          <TabsTrigger value="liquidations" className="data-[state=active]:bg-mint data-[state=active]:text-darkest-blue">Liquidations</TabsTrigger>
+          <TabsTrigger value="news" className="data-[state=active]:bg-mint data-[state=active]:text-darkest-blue">News</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Globe className="h-4 w-4 text-mint" />
+                    <span className="text-sm text-muted-foreground">Total Market Cap</span>
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-mint">$2.1T</p>
+                <p className="text-sm text-mint/70">+2.4% (24h)</p>
+              </CardContent>
+            </Card>
+
+            <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <BarChart3 className="h-4 w-4 text-mint" />
+                    <span className="text-sm text-muted-foreground">24h Volume</span>
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-mint">$89.7B</p>
+                <p className="text-sm text-mint/70">+12.8% (24h)</p>
+              </CardContent>
+            </Card>
+
+            <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Target className="h-4 w-4 text-mint" />
+                    <span className="text-sm text-muted-foreground">BTC Dominance</span>
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-mint">42.3%</p>
+                <p className="text-sm text-mint/70">-0.8% (24h)</p>
+              </CardContent>
+            </Card>
+
+            <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-mint" />
+                    <span className="text-sm text-muted-foreground">Fear & Greed</span>
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-mint">74</p>
+                <p className="text-sm matrix-text">Extreme Greed</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-mint">Top Movers</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {topMovers.map((mover, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-darkest-blue/50 rounded-lg">
+                      <div>
+                        <p className="font-semibold text-mint">{mover.symbol}</p>
+                        <p className="text-sm text-muted-foreground font-mono">${mover.price}</p>
+                      </div>
+                      <div className="text-right">
+                        <div className="flex items-center gap-1">
+                          {mover.change >= 0 ? (
+                            <TrendingUp className="h-3 w-3 text-mint" />
+                          ) : (
+                            <TrendingDown className="h-3 w-3 text-red-400" />
+                          )}
+                          <span className={`font-mono ${mover.change >= 0 ? 'text-mint' : 'text-red-400'}`}>
+                            {mover.change >= 0 ? '+' : ''}{mover.change}%
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Vol: {mover.volume}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
+              <CardHeader>
+                <CardTitle className="text-mint">On-Chain Metrics</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {onChainMetrics.map((metric, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 bg-darkest-blue/50 rounded-lg">
+                      <span className="text-muted-foreground">{metric.metric}</span>
+                      <div className="text-right">
+                        <p className="font-mono text-mint">{metric.value}</p>
+                        <p className={`text-xs ${metric.change.startsWith('+') ? 'text-mint' : 'text-red-400'}`}>
+                          {metric.change}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="heatmap" className="space-y-6">
+          <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
+            <CardHeader>
+              <CardTitle className="text-mint">Sector Performance Heatmap</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {heatmapData.map((sector, index) => (
+                  <div 
+                    key={index}
+                    className={`p-6 rounded-lg transition-all duration-300 hover:scale-105 ${
+                      sector.change >= 0 ? 'bg-mint/20 border border-mint/40' : 'bg-red-500/20 border border-red-500/40'
+                    }`}
+                    style={{ 
+                      minHeight: `${100 + (sector.size / 10)}px`,
+                      backgroundSize: '20px 20px',
+                      backgroundImage: sector.change >= 0 
+                        ? 'linear-gradient(45deg, rgba(74, 222, 128, 0.1) 25%, transparent 25%), linear-gradient(-45deg, rgba(74, 222, 128, 0.1) 25%, transparent 25%)'
+                        : 'linear-gradient(45deg, rgba(239, 68, 68, 0.1) 25%, transparent 25%), linear-gradient(-45deg, rgba(239, 68, 68, 0.1) 25%, transparent 25%)'
+                    }}
+                  >
+                    <h3 className="font-semibold text-mint mb-2">{sector.name}</h3>
+                    <p className={`text-2xl font-bold ${sector.change >= 0 ? 'text-mint' : 'text-red-400'}`}>
+                      {sector.change >= 0 ? '+' : ''}{sector.change}%
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      ${sector.size}B MCap
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="defi" className="space-y-6">
+          <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
+            <CardHeader>
+              <CardTitle className="text-mint">DEX Analytics</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {dexMetrics.map((dex, index) => (
+                  <div key={index} className="p-4 bg-darkest-blue/50 rounded-lg">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="font-semibold text-mint">{dex.name}</h4>
+                      <Badge className="mint-button text-xs">Active</Badge>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <p className="text-muted-foreground">24h Volume</p>
+                        <p className="font-mono text-mint">{dex.volume}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">24h Fees</p>
+                        <p className="font-mono text-mint">{dex.fees}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Pairs</p>
+                        <p className="font-mono text-mint">{dex.pairs}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="watchlist" className="space-y-6">
           <Card className="bg-slate-800/50 border-slate-700">
@@ -252,41 +480,10 @@ export const MarketData = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="charts" className="space-y-6">
-          <Card className="bg-slate-800/50 border-slate-700">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>BTC/USDT Chart</CardTitle>
-                <div className="flex gap-2">
-                  {timeframes.map((tf) => (
-                    <Button
-                      key={tf}
-                      variant={selectedTimeframe === tf ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedTimeframe(tf)}
-                      className={selectedTimeframe === tf ? "bg-emerald-600" : "border-slate-600"}
-                    >
-                      {tf}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="h-96 bg-slate-900/50 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-slate-400 mb-2">Candlestick chart for {selectedTimeframe} timeframe</p>
-                  <p className="text-sm text-slate-500">Real-time chart integration coming soon</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
         <TabsContent value="orderbook" className="space-y-6">
           <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
             <CardHeader>
-              <CardTitle className="gradient-text">Order Book - BTC/USDT</CardTitle>
+              <CardTitle className="text-mint">Order Book - BTC/USDT</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -294,11 +491,11 @@ export const MarketData = () => {
                 <div>
                   <h4 className="text-sm font-semibold text-red-400 mb-3">Asks (Sell Orders)</h4>
                   <div className="space-y-1">
-                    {orderBookData.asks.reverse().map((ask, index) => (
+                    {liquidations.map((ask, index) => (
                       <div key={index} className="grid grid-cols-3 gap-4 p-2 hover:bg-red-500/10 transition-colors text-sm font-mono">
                         <span className="text-red-400">${ask.price.toLocaleString()}</span>
                         <span className="text-right">{ask.amount}</span>
-                        <span className="text-right text-muted-foreground">${ask.total.toLocaleString()}</span>
+                        <span className="text-right text-muted-foreground">${ask.price.toLocaleString()}</span>
                       </div>
                     ))}
                   </div>
@@ -308,11 +505,11 @@ export const MarketData = () => {
                 <div>
                   <h4 className="text-sm font-semibold text-mint mb-3">Bids (Buy Orders)</h4>
                   <div className="space-y-1">
-                    {orderBookData.bids.map((bid, index) => (
+                    {liquidations.map((bid, index) => (
                       <div key={index} className="grid grid-cols-3 gap-4 p-2 hover:bg-mint/10 transition-colors text-sm font-mono">
                         <span className="text-mint">${bid.price.toLocaleString()}</span>
                         <span className="text-right">{bid.amount}</span>
-                        <span className="text-right text-muted-foreground">${bid.total.toLocaleString()}</span>
+                        <span className="text-right text-muted-foreground">${bid.price.toLocaleString()}</span>
                       </div>
                     ))}
                   </div>
@@ -371,104 +568,6 @@ export const MarketData = () => {
                         <p className="text-xs text-muted-foreground">
                           {formatTimeAgo(liq.timestamp)}
                         </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="exchanges" className="space-y-6">
-          <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
-            <CardHeader>
-              <CardTitle className="gradient-text">Top 20 Exchanges by Volume</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {topExchanges.map((exchange, index) => (
-                  <div 
-                    key={index}
-                    className="p-4 bg-dark-blue/30 rounded-lg hover:bg-dark-blue/50 transition-all duration-300"
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-semibold">{exchange.name}</h4>
-                      <div className="flex items-center gap-2">
-                        <div className={`w-2 h-2 rounded-full ${
-                          exchange.status === 'connected' ? 'bg-mint animate-pulse' : 
-                          exchange.status === 'connecting' ? 'bg-yellow-400 animate-pulse' : 'bg-red-400'
-                        }`} />
-                        <span className="text-xs text-muted-foreground capitalize">
-                          {exchange.status}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">24h Volume</span>
-                        <span className="font-mono font-semibold">{exchange.volume}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Change</span>
-                        <span className={`font-mono ${exchange.change.startsWith('+') ? 'text-mint' : 'text-red-400'}`}>
-                          {exchange.change}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">Trading Pairs</span>
-                        <span className="font-mono">{exchange.pairs}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="calendar" className="space-y-6">
-          <Card className="bg-slate-800/50 border-slate-700">
-            <CardHeader>
-              <CardTitle>Economic Calendar - Today</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {economicEvents.map((event, index) => (
-                  <div key={index} className="p-4 bg-slate-900/50 rounded-lg">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <div className="text-center">
-                          <p className="font-mono text-sm">{event.time}</p>
-                          <Badge variant="outline" className="text-xs mt-1">
-                            {event.currency}
-                          </Badge>
-                        </div>
-                        <div>
-                          <p className="font-semibold">{event.event}</p>
-                          <Badge 
-                            variant={
-                              event.impact === 'high' ? 'destructive' :
-                              event.impact === 'medium' ? 'default' : 'secondary'
-                            }
-                            className="text-xs mt-1"
-                          >
-                            {event.impact} impact
-                          </Badge>
-                        </div>
-                      </div>
-                      
-                      <div className="text-right text-sm">
-                        <div className="grid grid-cols-2 gap-4">
-                          <div>
-                            <p className="text-slate-400">Forecast</p>
-                            <p className="font-mono">{event.forecast}</p>
-                          </div>
-                          <div>
-                            <p className="text-slate-400">Previous</p>
-                            <p className="font-mono">{event.previous}</p>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </div>

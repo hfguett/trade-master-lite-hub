@@ -195,16 +195,16 @@ const Dashboard = () => {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
-                <Card key={index} className="stat-card glass-effect border-mint/20 hover-mint-border transition-all duration-300 hover:scale-105">
+                <Card key={index} className="stat-card glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300 hover:scale-105">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-muted-foreground mb-1">{stat.title}</p>
-                        <p className="text-2xl font-bold gradient-text">{stat.value}</p>
+                        <p className="text-sm text-mint/70 mb-1">{stat.title}</p>
+                        <p className="text-2xl font-bold text-mint">{stat.value}</p>
                         <div className="flex items-center mt-2">
                           {stat.icon}
                           <span className={`text-sm ml-1 ${
-                            stat.changeType === 'positive' ? 'text-mint' : 'text-muted-foreground'
+                            stat.changeType === 'positive' ? 'text-mint' : 'text-mint/70'
                           }`}>
                             {stat.change}
                           </span>
@@ -219,16 +219,16 @@ const Dashboard = () => {
             {/* Main Content Grid */}
             <div className="grid lg:grid-cols-3 gap-6">
               {/* Portfolio Chart */}
-              <Card className="lg:col-span-2 glass-effect border-mint/20 hover-mint-border transition-all duration-300 floating-chart">
+              <Card className="lg:col-span-2 glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300 floating-chart">
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between gradient-text">
+                  <CardTitle className="flex items-center justify-between text-mint">
                     Portfolio Performance
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="border-mint/50 hover-mint-border">
+                      <Button variant="outline" size="sm" className="border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue">
                         <Filter className="h-4 w-4 mr-2" />
                         Filter
                       </Button>
-                      <Button variant="outline" size="sm" className="border-mint/50 hover-mint-border">
+                      <Button variant="outline" size="sm" className="border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue">
                         <Download className="h-4 w-4 mr-2" />
                         Export
                       </Button>
@@ -246,24 +246,24 @@ const Dashboard = () => {
               </Card>
 
               {/* Quick Actions */}
-              <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
+              <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
                 <CardHeader>
-                  <CardTitle className="gradient-text">Quick Actions</CardTitle>
+                  <CardTitle className="text-mint">Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button className="w-full bg-mint hover:bg-mint/80 text-dark-blue transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-mint/25">
+                  <Button className="w-full mint-button transition-all duration-300 hover:scale-105">
                     <Plus className="h-4 w-4 mr-2" />
                     Add Trade
                   </Button>
-                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border transition-all duration-300 hover:scale-105">
+                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105">
                     <Calendar className="h-4 w-4 mr-2" />
                     Plan Trade
                   </Button>
-                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border transition-all duration-300 hover:scale-105">
+                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105">
                     <Target className="h-4 w-4 mr-2" />
                     Set Goal
                   </Button>
-                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border transition-all duration-300 hover:scale-105">
+                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105">
                     <BarChart3 className="h-4 w-4 mr-2" />
                     View Analytics
                   </Button>
@@ -279,34 +279,34 @@ const Dashboard = () => {
             </div>
 
             {/* Recent Trades */}
-            <Card className="glass-effect border-mint/20 hover-mint-border transition-all duration-300">
+            <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
               <CardHeader>
-                <CardTitle className="gradient-text">Recent Trades</CardTitle>
+                <CardTitle className="text-mint">Recent Trades</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {recentTrades.map((trade, index) => (
                     <div 
                       key={index} 
-                      className="flex items-center justify-between p-4 bg-dark-blue/30 rounded-lg hover:bg-dark-blue/50 transition-all duration-300 hover:scale-102 animate-slide-up"
+                      className="flex items-center justify-between p-4 bg-darkest-blue/50 rounded-lg hover:bg-darkest-blue/70 transition-all duration-300 hover:scale-102 animate-slide-up border border-mint/10"
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <div className="flex items-center space-x-4">
                         <Badge 
                           variant={trade.type === "LONG" ? "default" : "destructive"} 
                           className={`w-16 justify-center ${
-                            trade.type === "LONG" ? "bg-mint text-dark-blue" : ""
+                            trade.type === "LONG" ? "mint-button" : ""
                           }`}
                         >
                           {trade.type}
                         </Badge>
                         <div>
-                          <p className="font-semibold">{trade.symbol}</p>
-                          <p className="text-sm text-muted-foreground">{trade.date}</p>
+                          <p className="font-semibold text-mint">{trade.symbol}</p>
+                          <p className="text-sm text-mint/70">{trade.date}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-muted-foreground font-mono">
+                        <p className="text-sm text-mint/70 font-mono">
                           {trade.entry} → {trade.exit}
                         </p>
                         <p className={`font-semibold font-mono ${
@@ -366,21 +366,21 @@ const Dashboard = () => {
   };
 
   return (
-    <div ref={dashboardRef} className="min-h-screen bg-dark-blue text-foreground flex">
+    <div ref={dashboardRef} className="min-h-screen bg-darker-blue cyber-grid text-foreground flex">
       <DashboardSidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
       <main className="flex-1 p-6 ml-64">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold mb-2 gradient-text">
+              <h1 className="text-3xl font-bold mb-2 text-mint">
                 {getPageTitle()}
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-mint/70">
                 {getPageDescription()}
               </p>
             </div>
-            <Button className="bg-mint hover:bg-mint/80 text-dark-blue transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-mint/25">
+            <Button className="mint-button transition-all duration-300 hover:scale-105">
               <Plus className="h-4 w-4 mr-2" />
               Quick Add
             </Button>

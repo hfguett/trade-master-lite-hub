@@ -1,374 +1,328 @@
 
-import { useEffect, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { 
   TrendingUp, 
-  PieChart, 
-  BarChart3, 
-  Target, 
-  Shield,
-  Zap,
+  Shield, 
+  Zap, 
+  Users, 
+  Star, 
+  Play, 
+  ChevronRight,
+  BarChart3,
+  Target,
+  Brain,
+  Clock,
   Globe,
-  Star,
-  Check,
+  MessageSquare,
+  Mail,
+  Phone,
+  MapPin,
+  CheckCircle,
   ArrowRight,
-  Play
+  Sparkles,
+  Lock,
+  Activity
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { TradingChart } from "@/components/ui/TradingChart";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Index = () => {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const featuresRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Hero animations
-      gsap.fromTo(
-        ".hero-title",
-        { y: 100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "back.out(1.7)" }
-      );
-
-      gsap.fromTo(
-        ".hero-subtitle",
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, delay: 0.3, ease: "power2.out" }
-      );
-
-      gsap.fromTo(
-        ".hero-cta",
-        { y: 30, opacity: 0, scale: 0.9 },
-        { y: 0, opacity: 1, scale: 1, duration: 0.6, delay: 0.6, ease: "back.out(1.7)" }
-      );
-
-      // Features animation on scroll
-      gsap.fromTo(
-        ".feature-card",
-        { y: 80, opacity: 0, scale: 0.9 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".features-section",
-            start: "top 80%",
-            end: "bottom 20%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-
-      // Stats animation
-      gsap.fromTo(
-        ".stat-item",
-        { scale: 0.5, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: ".stats-section",
-            start: "top 80%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-
-      // Floating animation for dashboard preview
-      gsap.to(".dashboard-preview", {
-        y: -20,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "power2.inOut"
-      });
-
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  const mockPortfolioData = [
-    { name: 'Jan', value: 10000 },
-    { name: 'Feb', value: 12500 },
-    { name: 'Mar', value: 18000 },
-    { name: 'Apr', value: 22000 },
-    { name: 'May', value: 28000 },
-  ];
+  const [email, setEmail] = useState("");
+  const [feedback, setFeedback] = useState("");
 
   const features = [
     {
       icon: <BarChart3 className="h-8 w-8 text-mint" />,
-      title: "Smart Trading Journal",
-      description: "Track every trade with detailed analytics, screenshots, and performance insights to improve your strategy.",
-      highlight: "AI-Powered Analysis"
+      title: "Advanced Analytics",
+      description: "Real-time market data, portfolio tracking, and performance analytics with AI-powered insights.",
+      color: "from-mint/20 to-mint/10"
     },
     {
-      icon: <PieChart className="h-8 w-8 text-mint" />,
-      title: "Portfolio Management",
-      description: "Real-time portfolio tracking with advanced analytics, risk assessment, and diversification insights.",
-      highlight: "Real-Time Updates"
+      icon: <Brain className="h-8 w-8 text-mint" />,
+      title: "AI Trading Assistant",
+      description: "Get personalized trade suggestions, market analysis, and risk management recommendations.",
+      color: "from-mint/20 to-mint/10"
     },
     {
-      icon: <Globe className="h-8 w-8 text-mint" />,
-      title: "Market Intelligence",
-      description: "Live market data, economic calendar, and news feed to stay ahead of market movements.",
-      highlight: "Global Markets"
+      icon: <Shield className="h-8 w-8 text-mint" />,
+      title: "Secure & Private",
+      description: "Bank-grade security with end-to-end encryption. Your data stays private and secure.",
+      color: "from-mint/20 to-mint/10"
+    },
+    {
+      icon: <Zap className="h-8 w-8 text-mint" />,
+      title: "Lightning Fast",
+      description: "Sub-millisecond data feeds and instant order execution across multiple exchanges.",
+      color: "from-mint/20 to-mint/10"
     },
     {
       icon: <Target className="h-8 w-8 text-mint" />,
-      title: "Goal Planning",
-      description: "Set SMART trading goals, track progress, and get AI-powered suggestions for improvement.",
-      highlight: "SMART Goals"
+      title: "Smart Alerts",
+      description: "Custom price alerts, whale tracking, and market sentiment notifications.",
+      color: "from-mint/20 to-mint/10"
+    },
+    {
+      icon: <Globe className="h-8 w-8 text-mint" />,
+      title: "Multi-Chain Support",
+      description: "Track and trade across Bitcoin, Ethereum, Solana, and 50+ other blockchains.",
+      color: "from-mint/20 to-mint/10"
     }
   ];
 
   const testimonials = [
     {
+      name: "Alex Thompson",
+      role: "Professional Trader",
+      image: "/placeholder.svg",
+      content: "This platform revolutionized my trading. The AI suggestions helped me increase my win rate by 40%.",
+      rating: 5
+    },
+    {
       name: "Sarah Chen",
-      role: "Day Trader",
-      content: "TradeMaster Lite transformed my trading. The journal feature helped me identify my mistakes and improve my win rate by 40%.",
+      role: "Crypto Investor",
+      image: "/placeholder.svg", 
+      content: "The whale tracking feature is incredible. I can spot large movements before they affect the market.",
       rating: 5
     },
     {
-      name: "Marcus Rodriguez",
-      role: "Crypto Trader",
-      content: "The portfolio tracking is incredible. I can see all my positions across different exchanges in one place.",
-      rating: 5
-    },
-    {
-      name: "Emily Thompson",
-      role: "Swing Trader",
-      content: "The goal planning feature keeps me disciplined. I've achieved my best monthly returns since using this platform.",
+      name: "Michael Rodriguez",
+      role: "DeFi Specialist",
+      image: "/placeholder.svg",
+      content: "Best portfolio management tool I've used. Real-time analytics and perfect execution every time.",
       rating: 5
     }
   ];
 
-  const pricing = [
+  const stats = [
+    { label: "Active Traders", value: "50K+", icon: <Users className="h-6 w-6" /> },
+    { label: "Trading Volume", value: "$2.1B", icon: <TrendingUp className="h-6 w-6" /> },
+    { label: "Success Rate", value: "94%", icon: <Target className="h-6 w-6" /> },
+    { label: "Uptime", value: "99.9%", icon: <Activity className="h-6 w-6" /> }
+  ];
+
+  const videos = [
     {
-      name: "Free Trader",
-      price: "$0",
+      title: "Getting Started with CryptoTrader Pro",
+      duration: "3:45",
+      thumbnail: "/placeholder.svg",
+      description: "Learn the basics of setting up your account and making your first trade."
+    },
+    {
+      title: "Advanced Portfolio Management",
+      duration: "8:22",
+      thumbnail: "/placeholder.svg",
+      description: "Master portfolio optimization, risk management, and automated rebalancing."
+    },
+    {
+      title: "AI Trading Strategies Explained",
+      duration: "12:18",
+      thumbnail: "/placeholder.svg",
+      description: "Deep dive into how our AI analyzes markets and generates trading signals."
+    }
+  ];
+
+  const pricingPlans = [
+    {
+      name: "Starter",
+      price: "Free",
       period: "forever",
-      description: "Perfect for beginners",
       features: [
-        "Trading journal (unlimited trades)",
         "Basic portfolio tracking",
-        "Market data & news",
-        "Goal setting & tracking",
-        "Community support"
+        "5 watchlist items",
+        "Standard alerts",
+        "Community access"
       ],
+      cta: "Get Started",
       popular: false
     },
     {
-      name: "Rookie Trader",
+      name: "Professional",
       price: "$29",
-      period: "month",
-      description: "For serious traders",
+      period: "per month",
       features: [
-        "Everything in Free",
         "Advanced analytics",
-        "Multiple exchange connections",
-        "Priority support",
-        "Advanced reporting",
-        "Custom indicators"
+        "Unlimited watchlists",
+        "AI trade suggestions",
+        "Real-time alerts",
+        "Whale tracking",
+        "Priority support"
       ],
+      cta: "Start Free Trial",
       popular: true
     },
     {
-      name: "Pro Trader",
-      price: "$79",
-      period: "month",
-      description: "For professional traders",
+      name: "Enterprise",
+      price: "$99",
+      period: "per month",
       features: [
-        "Everything in Rookie",
-        "Custom dashboards",
+        "Everything in Professional",
         "API access",
-        "White-label options",
-        "1-on-1 coaching session",
-        "Priority features"
+        "Custom integrations",
+        "Dedicated support",
+        "Advanced risk management",
+        "Multi-user accounts"
       ],
+      cta: "Contact Sales",
       popular: false
     }
   ];
 
+  const handleNewsletterSignup = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Newsletter signup:", email);
+    setEmail("");
+    alert("Thank you for subscribing!");
+  };
+
+  const handleFeedbackSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Feedback:", feedback);
+    setFeedback("");
+    alert("Thank you for your feedback!");
+  };
+
   return (
-    <div ref={heroRef} className="min-h-screen bg-dark-blue text-foreground">
-      {/* Navigation */}
-      <nav className="border-b border-mint/20 glass-effect">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+    <div className="min-h-screen bg-darker-blue cyber-grid">
+      {/* Header */}
+      <header className="relative z-50 border-b border-mint/20 glass-effect-strong">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-mint rounded-lg flex items-center justify-center">
-                <TrendingUp className="h-5 w-5 text-dark-blue" />
+              <div className="w-8 h-8 bg-mint-glow rounded-lg flex items-center justify-center">
+                <BarChart3 className="h-5 w-5 text-darkest-blue" />
               </div>
-              <span className="text-xl font-bold gradient-text">TradeMaster Lite</span>
+              <span className="text-xl font-bold text-mint">CryptoTrader Pro</span>
             </div>
-            <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-muted-foreground hover:text-mint transition-colors">Features</a>
-              <a href="#pricing" className="text-muted-foreground hover:text-mint transition-colors">Pricing</a>
-              <a href="#testimonials" className="text-muted-foreground hover:text-mint transition-colors">Reviews</a>
+            
+            <nav className="hidden md:flex items-center space-x-8">
+              <a href="#features" className="text-mint hover:text-matrix-green transition-colors">Features</a>
+              <a href="#pricing" className="text-mint hover:text-matrix-green transition-colors">Pricing</a>
+              <a href="#testimonials" className="text-mint hover:text-matrix-green transition-colors">Reviews</a>
+              <a href="#contact" className="text-mint hover:text-matrix-green transition-colors">Contact</a>
+            </nav>
+
+            <div className="flex items-center space-x-4">
+              <Button variant="outline" className="border-mint/50 text-mint hover:bg-mint hover:text-darkest-blue">
+                Sign In
+              </Button>
               <Link to="/dashboard">
-                <Button className="bg-mint hover:bg-mint/80 text-dark-blue transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-mint/25">
-                  Launch App
+                <Button className="mint-button">
+                  Get Started
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </div>
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Hero Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <Badge className="mb-6 bg-mint/20 text-mint border-mint/50 animate-pulse-slow">
-                <Zap className="h-3 w-3 mr-1" />
-                Now with AI-Powered Insights
-              </Badge>
-              
-              <h1 className="hero-title text-5xl lg:text-7xl font-bold mb-6">
-                Master Your Trades with <span className="gradient-text">Ease</span>
-              </h1>
-              
-              <p className="hero-subtitle text-xl text-muted-foreground mb-8 leading-relaxed">
-                Track, plan, and grow your trading portfolio with TradeMaster Lite. 
-                The ultimate platform for retail traders who want professional-grade tools without the complexity.
-              </p>
-              
-              <div className="hero-cta flex flex-col sm:flex-row gap-4">
-                <Link to="/dashboard">
-                  <Button size="lg" className="bg-mint hover:bg-mint/80 text-dark-blue text-lg px-8 py-4 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-mint/25">
-                    Start Trading for Free
-                    <ArrowRight className="h-5 w-5 ml-2" />
-                  </Button>
-                </Link>
-                <Button size="lg" variant="outline" className="border-mint/50 hover-mint-border text-lg px-8 py-4 transition-all duration-300 hover:scale-105">
-                  <Play className="h-5 w-5 mr-2" />
-                  Watch Demo
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-mint/5 via-transparent to-matrix-green/5" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center max-w-4xl mx-auto">
+            <Badge className="mb-6 mint-button text-sm">
+              <Sparkles className="w-4 h-4 mr-2" />
+              AI-Powered Trading Platform
+            </Badge>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-mint leading-tight">
+              Trade Smarter with
+              <span className="block matrix-text animate-pulse-slow">AI Intelligence</span>
+            </h1>
+            <p className="text-xl text-mint/80 mb-8 max-w-2xl mx-auto">
+              Professional-grade crypto trading platform with real-time analytics, 
+              AI-powered insights, and advanced portfolio management tools.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/dashboard">
+                <Button size="lg" className="mint-button text-lg px-8 py-4">
+                  Start Trading Now
+                  <TrendingUp className="ml-2 h-5 w-5" />
                 </Button>
-              </div>
-              
-              <div className="flex items-center gap-6 mt-8 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-mint" />
-                  <span>Free forever</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-mint" />
-                  <span>No credit card required</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-mint" />
-                  <span>Start in 30 seconds</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="dashboard-preview relative">
-              <Card className="glass-effect border-mint/20 hover:border-mint/40 transition-all duration-500">
-                <CardHeader>
-                  <CardTitle className="gradient-text">Live Portfolio Performance</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <TradingChart 
-                    type="area" 
-                    data={mockPortfolioData} 
-                    height={300}
-                    animate={true}
-                  />
-                  <div className="grid grid-cols-3 gap-4 mt-6">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-mint">+28.5%</div>
-                      <div className="text-sm text-muted-foreground">Total Return</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-mint">72.3%</div>
-                      <div className="text-sm text-muted-foreground">Win Rate</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-mint">$28K</div>
-                      <div className="text-sm text-muted-foreground">Portfolio</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              </Link>
+              <Button size="lg" variant="outline" className="border-mint/50 text-mint hover:bg-mint hover:text-darkest-blue text-lg px-8 py-4">
+                <Play className="mr-2 h-5 w-5" />
+                Watch Demo
+              </Button>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Stats Section */}
-      <section ref={statsRef} className="stats-section py-16 px-4 sm:px-6 lg:px-8 bg-vibrant-blue/20">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="stat-item text-center">
-              <div className="text-4xl font-bold text-mint mb-2">50K+</div>
-              <div className="text-muted-foreground">Active Traders</div>
-            </div>
-            <div className="stat-item text-center">
-              <div className="text-4xl font-bold text-mint mb-2">2.3M+</div>
-              <div className="text-muted-foreground">Trades Logged</div>
-            </div>
-            <div className="stat-item text-center">
-              <div className="text-4xl font-bold text-mint mb-2">$127M+</div>
-              <div className="text-muted-foreground">Portfolio Value</div>
-            </div>
-            <div className="stat-item text-center">
-              <div className="text-4xl font-bold text-mint mb-2">98.9%</div>
-              <div className="text-muted-foreground">Uptime</div>
-            </div>
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="flex justify-center mb-2 text-mint">
+                  {stat.icon}
+                </div>
+                <div className="text-3xl font-bold text-mint">{stat.value}</div>
+                <div className="text-mint/70">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section ref={featuresRef} id="features" className="features-section py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <section id="features" className="py-20 relative">
+        <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <Badge className="mb-4 bg-mint/20 text-mint border-mint/50">
-              <Shield className="h-3 w-3 mr-1" />
-              Professional Tools
-            </Badge>
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 gradient-text">
-              Everything You Need to Trade Like a Pro
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              From journal tracking to portfolio management, we've got all the tools you need to elevate your trading game.
+            <h2 className="text-4xl font-bold text-mint mb-4">Powerful Features</h2>
+            <p className="text-xl text-mint/80 max-w-2xl mx-auto">
+              Everything you need to trade cryptocurrencies like a professional
             </p>
           </div>
-          
-          <div className="grid lg:grid-cols-2 gap-8">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="feature-card glass-effect border-mint/20 hover-mint-border transition-all duration-500 hover:scale-105 group">
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="p-3 rounded-lg bg-mint/20 group-hover:bg-mint/30 transition-colors">
-                      {feature.icon}
-                    </div>
-                    <Badge variant="outline" className="border-mint/50 text-mint">
-                      {feature.highlight}
-                    </Badge>
+              <Card key={index} className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300 group hover:scale-105">
+                <CardContent className="p-8">
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                    {feature.icon}
                   </div>
-                  <CardTitle className="text-xl gradient-text">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {feature.description}
-                  </p>
+                  <h3 className="text-xl font-semibold text-mint mb-4">{feature.title}</h3>
+                  <p className="text-mint/70 leading-relaxed">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Video Section */}
+      <section className="py-20 bg-darkest-blue/50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-mint mb-4">Learn & Master</h2>
+            <p className="text-xl text-mint/80 max-w-2xl mx-auto">
+              Watch tutorials and master advanced trading strategies
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {videos.map((video, index) => (
+              <Card key={index} className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300 group hover:scale-105">
+                <div className="relative">
+                  <img 
+                    src={video.thumbnail} 
+                    alt={video.title}
+                    className="w-full h-48 object-cover rounded-t-lg"
+                  />
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center group-hover:bg-black/40 transition-all cursor-pointer">
+                    <div className="w-16 h-16 bg-mint rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Play className="h-8 w-8 text-darkest-blue ml-1" />
+                    </div>
+                  </div>
+                  <Badge className="absolute top-4 right-4 bg-darkest-blue/80 text-mint">
+                    {video.duration}
+                  </Badge>
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="font-semibold text-mint mb-2">{video.title}</h3>
+                  <p className="text-mint/70 text-sm">{video.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -377,30 +331,35 @@ const Index = () => {
       </section>
 
       {/* Testimonials */}
-      <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-vibrant-blue/10">
-        <div className="max-w-7xl mx-auto">
+      <section id="testimonials" className="py-20">
+        <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6 gradient-text">Trusted by Thousands of Traders</h2>
-            <p className="text-xl text-muted-foreground">
-              See what our community has to say about their trading journey
+            <h2 className="text-4xl font-bold text-mint mb-4">What Traders Say</h2>
+            <p className="text-xl text-mint/80 max-w-2xl mx-auto">
+              Join thousands of successful traders who trust our platform
             </p>
           </div>
-          
-          <div className="grid lg:grid-cols-3 gap-8">
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="glass-effect border-mint/20 hover-mint-border transition-all duration-300 hover:scale-105">
-                <CardHeader>
-                  <div className="flex items-center gap-1 mb-4">
+              <Card key={index} className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
+                <CardContent className="p-8">
+                  <div className="flex items-center mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-mint text-mint" />
+                      <Star key={i} className="h-5 w-5 text-mint fill-current" />
                     ))}
                   </div>
-                  <p className="text-muted-foreground italic">"{testimonial.content}"</p>
-                </CardHeader>
-                <CardContent>
-                  <div>
-                    <p className="font-semibold text-mint">{testimonial.name}</p>
-                    <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                  <p className="text-mint/80 mb-6 italic">"{testimonial.content}"</p>
+                  <div className="flex items-center">
+                    <img 
+                      src={testimonial.image} 
+                      alt={testimonial.name}
+                      className="w-12 h-12 rounded-full mr-4 border-2 border-mint/20"
+                    />
+                    <div>
+                      <div className="font-semibold text-mint">{testimonial.name}</div>
+                      <div className="text-mint/70 text-sm">{testimonial.role}</div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -410,53 +369,45 @@ const Index = () => {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <section id="pricing" className="py-20 bg-darkest-blue/50">
+        <div className="container mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6 gradient-text">Simple, Transparent Pricing</h2>
-            <p className="text-xl text-muted-foreground">
-              Start free and scale as you grow. No hidden fees, cancel anytime.
+            <h2 className="text-4xl font-bold text-mint mb-4">Choose Your Plan</h2>
+            <p className="text-xl text-mint/80 max-w-2xl mx-auto">
+              Start free and upgrade as you grow your trading portfolio
             </p>
           </div>
-          
-          <div className="grid lg:grid-cols-3 gap-8">
-            {pricing.map((plan, index) => (
-              <Card key={index} className={`glass-effect transition-all duration-300 hover:scale-105 ${
-                plan.popular 
-                  ? 'border-mint ring-2 ring-mint/50' 
-                  : 'border-mint/20 hover-mint-border'
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {pricingPlans.map((plan, index) => (
+              <Card key={index} className={`glass-effect-strong transition-all duration-300 hover:scale-105 ${
+                plan.popular ? 'border-mint ring-2 ring-mint/20' : 'border-mint/20 hover-mint-border'
               }`}>
                 {plan.popular && (
-                  <div className="bg-mint text-dark-blue text-center py-2 text-sm font-semibold">
-                    Most Popular
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <Badge className="mint-button px-4 py-1">Most Popular</Badge>
                   </div>
                 )}
-                <CardHeader className="text-center">
-                  <CardTitle className="gradient-text">{plan.name}</CardTitle>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold text-mint">{plan.price}</span>
-                    <span className="text-muted-foreground">/{plan.period}</span>
+                <CardContent className="p-8 relative">
+                  <div className="text-center mb-8">
+                    <h3 className="text-2xl font-bold text-mint mb-2">{plan.name}</h3>
+                    <div className="mb-4">
+                      <span className="text-4xl font-bold text-mint">{plan.price}</span>
+                      {plan.period && <span className="text-mint/70 ml-2">{plan.period}</span>}
+                    </div>
                   </div>
-                  <p className="text-muted-foreground">{plan.description}</p>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
+                  
+                  <ul className="space-y-4 mb-8">
                     {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-mint" />
-                        <span className="text-sm">{feature}</span>
+                      <li key={featureIndex} className="flex items-center text-mint/80">
+                        <CheckCircle className="h-5 w-5 text-mint mr-3 flex-shrink-0" />
+                        {feature}
                       </li>
                     ))}
                   </ul>
-                  <Button 
-                    className={`w-full transition-all duration-300 hover:scale-105 ${
-                      plan.popular 
-                        ? 'bg-mint hover:bg-mint/80 text-dark-blue' 
-                        : 'border-mint/50 hover-mint-border'
-                    }`}
-                    variant={plan.popular ? 'default' : 'outline'}
-                  >
-                    {plan.price === '$0' ? 'Start Free' : 'Start Trial'}
+                  
+                  <Button className={`w-full ${plan.popular ? 'mint-button' : 'border border-mint/50 text-mint hover:bg-mint hover:text-darkest-blue'}`}>
+                    {plan.cta}
                   </Button>
                 </CardContent>
               </Card>
@@ -465,73 +416,143 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-mint/20 to-vibrant-blue/20">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-6 gradient-text">
-            Ready to Transform Your Trading?
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8">
-            Join thousands of traders who've already elevated their game with TradeMaster Lite.
+      {/* Contact & Feedback */}
+      <section id="contact" className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Contact */}
+            <div>
+              <h2 className="text-3xl font-bold text-mint mb-8">Get in Touch</h2>
+              <div className="space-y-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-mint/20 rounded-lg flex items-center justify-center">
+                    <Mail className="h-6 w-6 text-mint" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-mint">Email</div>
+                    <div className="text-mint/70">support@cryptotrader.pro</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-mint/20 rounded-lg flex items-center justify-center">
+                    <Phone className="h-6 w-6 text-mint" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-mint">Phone</div>
+                    <div className="text-mint/70">+1 (555) 123-4567</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-mint/20 rounded-lg flex items-center justify-center">
+                    <MapPin className="h-6 w-6 text-mint" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-mint">Office</div>
+                    <div className="text-mint/70">San Francisco, CA</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Feedback Form */}
+            <Card className="glass-effect-strong border-mint/20">
+              <CardHeader>
+                <CardTitle className="text-mint">Send Feedback</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleFeedbackSubmit} className="space-y-4">
+                  <Textarea
+                    placeholder="Share your thoughts or suggestions..."
+                    value={feedback}
+                    onChange={(e) => setFeedback(e.target.value)}
+                    className="bg-darkest-blue border-mint/30 text-mint min-h-32"
+                    required
+                  />
+                  <Button type="submit" className="mint-button w-full">
+                    <MessageSquare className="mr-2 h-4 w-4" />
+                    Send Feedback
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="py-20 bg-darkest-blue/50">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold text-mint mb-4">Stay Updated</h2>
+          <p className="text-xl text-mint/80 mb-8 max-w-2xl mx-auto">
+            Get the latest market insights, trading tips, and platform updates
           </p>
-          <Link to="/dashboard">
-            <Button size="lg" className="bg-mint hover:bg-mint/80 text-dark-blue text-lg px-8 py-4 transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-mint/25">
-              Start Your Trading Journey
-              <ArrowRight className="h-5 w-5 ml-2" />
+          <form onSubmit={handleNewsletterSignup} className="max-w-md mx-auto flex gap-4">
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="bg-darkest-blue border-mint/30 text-mint flex-1"
+              required
+            />
+            <Button type="submit" className="mint-button">
+              Subscribe
             </Button>
-          </Link>
+          </form>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-mint/20 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-4 gap-8">
+      <footer className="border-t border-mint/20 bg-darkest-blue/80 py-12">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-mint rounded-lg flex items-center justify-center">
-                  <TrendingUp className="h-5 w-5 text-dark-blue" />
+                <div className="w-8 h-8 bg-mint-glow rounded-lg flex items-center justify-center">
+                  <BarChart3 className="h-5 w-5 text-darkest-blue" />
                 </div>
-                <span className="text-xl font-bold gradient-text">TradeMaster Lite</span>
+                <span className="text-xl font-bold text-mint">CryptoTrader Pro</span>
               </div>
-              <p className="text-muted-foreground">
-                The ultimate trading platform for retail traders who want professional-grade tools.
+              <p className="text-mint/70">
+                Professional crypto trading platform with AI-powered insights.
               </p>
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4 text-mint">Product</h3>
-              <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="hover:text-mint transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-mint transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-mint transition-colors">Integrations</a></li>
+              <h3 className="font-semibold text-mint mb-4">Platform</h3>
+              <ul className="space-y-2 text-mint/70">
+                <li><a href="#" className="hover:text-mint transition-colors">Trading</a></li>
+                <li><a href="#" className="hover:text-mint transition-colors">Analytics</a></li>
+                <li><a href="#" className="hover:text-mint transition-colors">Portfolio</a></li>
                 <li><a href="#" className="hover:text-mint transition-colors">API</a></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4 text-mint">Support</h3>
-              <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="hover:text-mint transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-mint transition-colors">Community</a></li>
-                <li><a href="#" className="hover:text-mint transition-colors">Contact</a></li>
-                <li><a href="#" className="hover:text-mint transition-colors">Status</a></li>
+              <h3 className="font-semibold text-mint mb-4">Resources</h3>
+              <ul className="space-y-2 text-mint/70">
+                <li><a href="#" className="hover:text-mint transition-colors">Documentation</a></li>
+                <li><a href="#" className="hover:text-mint transition-colors">Tutorials</a></li>
+                <li><a href="#" className="hover:text-mint transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-mint transition-colors">Support</a></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4 text-mint">Company</h3>
-              <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="hover:text-mint transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-mint transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-mint transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-mint transition-colors">Privacy</a></li>
+              <h3 className="font-semibold text-mint mb-4">Legal</h3>
+              <ul className="space-y-2 text-mint/70">
+                <li><a href="#" className="hover:text-mint transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-mint transition-colors">Terms of Service</a></li>
+                <li><a href="#" className="hover:text-mint transition-colors">Security</a></li>
+                <li><a href="#" className="hover:text-mint transition-colors">Compliance</a></li>
               </ul>
             </div>
           </div>
           
-          <div className="border-t border-mint/20 mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 TradeMaster Lite. All rights reserved.</p>
+          <div className="border-t border-mint/20 mt-12 pt-8 text-center text-mint/70">
+            <p>&copy; 2024 CryptoTrader Pro. All rights reserved.</p>
           </div>
         </div>
       </footer>
