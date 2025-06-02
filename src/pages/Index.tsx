@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import { HeroSection } from "@/components/HeroSection";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -187,84 +187,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-darker-blue cyber-grid">
-      {/* Header */}
-      <header className="relative z-50 border-b border-mint/20 glass-effect-strong">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-mint-glow rounded-lg flex items-center justify-center">
-                <BarChart3 className="h-5 w-5 text-darkest-blue" />
-              </div>
-              <span className="text-xl font-bold text-mint">CryptoTrader Pro</span>
-            </div>
-            
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-mint hover:text-matrix-green transition-colors">Features</a>
-              <a href="#pricing" className="text-mint hover:text-matrix-green transition-colors">Pricing</a>
-              <a href="#testimonials" className="text-mint hover:text-matrix-green transition-colors">Reviews</a>
-              <a href="#contact" className="text-mint hover:text-matrix-green transition-colors">Contact</a>
-            </nav>
-
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" className="border-mint/50 text-mint hover:bg-mint hover:text-darkest-blue">
-                Sign In
-              </Button>
-              <Link to="/dashboard">
-                <Button className="mint-button">
-                  Get Started
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-mint/5 via-transparent to-matrix-green/5" />
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <Badge className="mb-6 mint-button text-sm">
-              <Sparkles className="w-4 h-4 mr-2" />
-              AI-Powered Trading Platform
-            </Badge>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-mint leading-tight">
-              Trade Smarter with
-              <span className="block matrix-text animate-pulse-slow">AI Intelligence</span>
-            </h1>
-            <p className="text-xl text-mint/80 mb-8 max-w-2xl mx-auto">
-              Professional-grade crypto trading platform with real-time analytics, 
-              AI-powered insights, and advanced portfolio management tools.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/dashboard">
-                <Button size="lg" className="mint-button text-lg px-8 py-4">
-                  Start Trading Now
-                  <TrendingUp className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Button size="lg" variant="outline" className="border-mint/50 text-mint hover:bg-mint hover:text-darkest-blue text-lg px-8 py-4">
-                <Play className="mr-2 h-5 w-5" />
-                Watch Demo
-              </Button>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-20">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="flex justify-center mb-2 text-mint">
-                  {stat.icon}
-                </div>
-                <div className="text-3xl font-bold text-mint">{stat.value}</div>
-                <div className="text-mint/70">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* Features Section */}
       <section id="features" className="py-20 relative">
@@ -406,7 +330,7 @@ const Index = () => {
                     ))}
                   </ul>
                   
-                  <Button className={`w-full ${plan.popular ? 'mint-button' : 'border border-mint/50 text-mint hover:bg-mint hover:text-darkest-blue'}`}>
+                  <Button className={`w-full ${plan.popular ? 'mint-button border-2 border-mint' : 'border border-mint/50 text-mint hover:bg-mint hover:text-darkest-blue'}`}>
                     {plan.cta}
                   </Button>
                 </CardContent>
@@ -470,7 +394,7 @@ const Index = () => {
                     className="bg-darkest-blue border-mint/30 text-mint min-h-32"
                     required
                   />
-                  <Button type="submit" className="mint-button w-full">
+                  <Button type="submit" className="mint-button w-full border-2 border-mint">
                     <MessageSquare className="mr-2 h-4 w-4" />
                     Send Feedback
                   </Button>
@@ -497,7 +421,7 @@ const Index = () => {
               className="bg-darkest-blue border-mint/30 text-mint flex-1"
               required
             />
-            <Button type="submit" className="mint-button">
+            <Button type="submit" className="mint-button border-2 border-mint">
               Subscribe
             </Button>
           </form>
