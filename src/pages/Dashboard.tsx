@@ -1,29 +1,28 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   TrendingUp, 
   TrendingDown, 
-  PieChart, 
-  BarChart3, 
   Target, 
-  Calendar,
+  BarChart3, 
   Plus,
   Filter,
   Download
 } from "lucide-react";
-import { DashboardSidebar } from "@/components/DashboardSidebar";
+import { EnhancedSidebar } from "@/components/EnhancedSidebar";
 import { TradingJournal } from "@/components/TradingJournal";
 import { PortfolioOverview } from "@/components/PortfolioOverview";
 import { MarketData } from "@/components/MarketData";
 import { WhaleTracker } from "@/components/WhaleTracker";
 import { GoalTracker } from "@/components/GoalTracker";
 import { AnalyticsDashboard } from "@/components/AnalyticsDashboard";
+import { AISignals } from "@/components/AISignals";
+import { BotTrading } from "@/components/BotTrading";
+import { RiskManagement } from "@/components/RiskManagement";
 import { EnhancedDrawingJournal } from "@/components/EnhancedDrawingJournal";
-import { AISuggestions } from "@/components/AISuggestions";
-import { DrawingJournal } from "@/components/DrawingJournal";
 import { NotesManager } from "@/components/NotesManager";
 import { ScreenshotManager } from "@/components/ScreenshotManager";
 import { DiagramBuilder } from "@/components/DiagramBuilder";
@@ -45,7 +44,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate stats cards on load
       gsap.fromTo(
         ".stat-card",
         { 
@@ -63,7 +61,6 @@ const Dashboard = () => {
         }
       );
 
-      // Animate main content
       gsap.fromTo(
         ".main-content",
         { 
@@ -79,7 +76,6 @@ const Dashboard = () => {
         }
       );
 
-      // Floating animation for charts
       gsap.to(".floating-chart", {
         y: -10,
         duration: 2,
@@ -173,10 +169,14 @@ const Dashboard = () => {
         return <GoalTracker />;
       case "analytics":
         return <AnalyticsDashboard />;
+      case "ai-signals":
+        return <AISignals />;
+      case "bot-trading":
+        return <BotTrading />;
+      case "risk-management":
+        return <RiskManagement />;
       case "drawing":
         return <EnhancedDrawingJournal />;
-      case "ai-suggestions":
-        return <AISuggestions />;
       case "notes":
         return <NotesManager />;
       case "screenshots":
@@ -218,7 +218,6 @@ const Dashboard = () => {
 
             {/* Main Content Grid */}
             <div className="grid lg:grid-cols-3 gap-6">
-              {/* Portfolio Chart */}
               <Card className="lg:col-span-2 glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300 floating-chart">
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between text-mint">
@@ -245,7 +244,6 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-              {/* Quick Actions */}
               <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-mint">Quick Actions</CardTitle>
@@ -255,30 +253,40 @@ const Dashboard = () => {
                     <Plus className="h-4 w-4 mr-2" />
                     Add Trade
                   </Button>
-                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    Plan Trade
-                  </Button>
-                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105">
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105"
+                    onClick={() => setActiveTab("ai-signals")}
+                  >
                     <Target className="h-4 w-4 mr-2" />
-                    Set Goal
+                    View AI Signals
                   </Button>
-                  <Button variant="outline" className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105">
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105"
+                    onClick={() => setActiveTab("bot-trading")}
+                  >
                     <BarChart3 className="h-4 w-4 mr-2" />
-                    View Analytics
+                    Manage Bots
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105"
+                    onClick={() => setActiveTab("risk-management")}
+                  >
+                    <TrendingUp className="h-4 w-4 mr-2" />
+                    Risk Analysis
                   </Button>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Enhanced Features Row */}
             <div className="grid lg:grid-cols-3 gap-6">
               <WorldClock />
               <GoalPlanningWidget />
               <EconomicCalendar />
             </div>
 
-            {/* Recent Trades */}
             <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
               <CardHeader>
                 <CardTitle className="text-mint">Recent Trades</CardTitle>
@@ -334,6 +342,9 @@ const Dashboard = () => {
       whale: "Whale Tracker", 
       goals: "Goals & Planning",
       analytics: "Analytics",
+      "ai-signals": "AI Trading Signals",
+      "bot-trading": "Automated Trading",
+      "risk-management": "Risk Management",
       drawing: "Drawing Journal",
       notes: "Notes Manager",
       screenshots: "Screenshots",
@@ -354,6 +365,9 @@ const Dashboard = () => {
       whale: "Monitor large blockchain transactions",
       goals: "Set and track your trading goals",
       analytics: "Deep dive into your trading analytics",
+      "ai-signals": "AI-powered trading recommendations",
+      "bot-trading": "Manage automated trading strategies",
+      "risk-management": "Monitor and control trading risks",
       drawing: "Sketch and analyze trade setups",
       notes: "Organize your trading notes and ideas",
       screenshots: "Manage trade confirmation screenshots",
@@ -367,9 +381,9 @@ const Dashboard = () => {
 
   return (
     <div ref={dashboardRef} className="min-h-screen bg-darker-blue cyber-grid text-foreground flex">
-      <DashboardSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+      <EnhancedSidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
-      <main className="flex-1 p-6 ml-64">
+      <main className="flex-1 p-6 ml-16 lg:ml-64 transition-all duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>
