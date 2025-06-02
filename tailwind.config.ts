@@ -73,7 +73,9 @@ export default {
 					light: 'hsl(var(--light-mint))',
 				},
 				'dark-blue': 'hsl(var(--dark-blue))',
-				'vibrant-blue': 'hsl(var(--vibrant-blue))',
+				'darker-blue': 'hsl(var(--darker-blue))',
+				'darkest-blue': 'hsl(var(--darkest-blue))',
+				'matrix-green': 'hsl(var(--matrix-green))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
