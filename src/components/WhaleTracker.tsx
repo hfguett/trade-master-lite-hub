@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -43,7 +44,16 @@ export const WhaleTracker = () => {
     // Load wallets from local storage or default state
     const storedWallets = localStorage.getItem('whaleWallets');
     if (storedWallets) {
-      setWallets(JSON.parse(storedWallets));
+      const parsedWallets = JSON.parse(storedWallets);
+      // Convert timestamp strings back to Date objects
+      const walletsWithDates = parsedWallets.map((wallet: WalletData) => ({
+        ...wallet,
+        transactions: wallet.transactions.map(tx => ({
+          ...tx,
+          timestamp: new Date(tx.timestamp)
+        }))
+      }));
+      setWallets(walletsWithDates);
     } else {
       setWallets([
         {
