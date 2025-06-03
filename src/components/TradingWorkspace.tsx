@@ -34,8 +34,14 @@ import {
   HelpCircle,
   AlertTriangle,
   CheckCircle,
-  Loader2
+  Loader2,
+  BarChart3,
+  BookOpen,
+  Pencil,
+  Layers,
+  FileText
 } from "lucide-react";
+import { VectorDrawingCanvas } from "@/components/VectorDrawingCanvas";
 
 export const TradingWorkspace = () => {
   const [symbol, setSymbol] = useState("BTC/USDT");
@@ -105,7 +111,7 @@ export const TradingWorkspace = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="space-y-6">
       {/* Order Form */}
       <Card className="glass-effect border-primary/20">
         <CardHeader>
@@ -286,6 +292,52 @@ export const TradingWorkspace = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Tabs */}
+      <Tabs defaultValue="overview" className="w-full">
+        <TabsList className="grid w-full grid-cols-5 glass-effect border-primary/20">
+          <TabsTrigger value="overview" className="data-[state=active]:bg-primary data-[state=active]:text-slate-900">
+            <BarChart3 className="h-4 w-4 mr-2" />
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="trades" className="data-[state=active]:bg-primary data-[state=active]:text-slate-900">
+            <BookOpen className="h-4 w-4 mr-2" />
+            Trade Journal
+          </TabsTrigger>
+          <TabsTrigger value="drawing" className="data-[state=active]:bg-primary data-[state=active]:text-slate-900">
+            <Pencil className="h-4 w-4 mr-2" />
+            Vector Drawing
+          </TabsTrigger>
+          <TabsTrigger value="diagrams" className="data-[state=active]:bg-primary data-[state=active]:text-slate-900">
+            <Layers className="h-4 w-4 mr-2" />
+            Diagrams
+          </TabsTrigger>
+          <TabsTrigger value="notes" className="data-[state=active]:bg-primary data-[state=active]:text-slate-900">
+            <FileText className="h-4 w-4 mr-2" />
+            Notes
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="mt-6">
+          {/* Overview Content */}
+        </TabsContent>
+
+        <TabsContent value="trades" className="mt-6">
+          {/* Trade Journal Content */}
+        </TabsContent>
+
+        <TabsContent value="drawing" className="mt-6">
+          <VectorDrawingCanvas />
+        </TabsContent>
+
+        <TabsContent value="diagrams" className="mt-6">
+          {/* Diagrams Content */}
+        </TabsContent>
+
+        <TabsContent value="notes" className="mt-6">
+          {/* Notes Content */}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
