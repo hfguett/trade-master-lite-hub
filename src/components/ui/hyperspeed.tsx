@@ -1,14 +1,6 @@
 
 import React, { useEffect, useRef, FC } from "react";
 import * as THREE from "three";
-import {
-  BloomEffect,
-  EffectComposer,
-  EffectPass,
-  RenderPass,
-  SMAAEffect,
-  SMAAPreset,
-} from "postprocessing";
 
 interface HyperspeedOptions {
   onSpeedUp?: (ev: MouseEvent) => void;

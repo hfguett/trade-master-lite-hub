@@ -34,38 +34,40 @@ export const Component = () => {
   ];
 
   return (
-    <div className="stacked-cards-container">
-      <div className="inner_container">
-        {activities.map((item, index) => (
-          <div 
-            key={item.id} 
-            className={cn(
-              "park_sec", 
-              `park_sec${index + 1}`,
-              isExpanded && "active"
-            )}
-          >
-            <div className="park_inside">
-              <span className="img" style={{ backgroundColor: item.color }}></span>
-              <div className="content_sec">
-                <h2>{item.activity}</h2>
-                <span>{item.location}</span>
+    <>
+      <div className="stacked-cards-container">
+        <div className="inner_container">
+          {activities.map((item, index) => (
+            <div 
+              key={item.id} 
+              className={cn(
+                "park_sec", 
+                `park_sec${index + 1}`,
+                isExpanded && "active"
+              )}
+            >
+              <div className="park_inside">
+                <span className="img" style={{ backgroundColor: item.color }}></span>
+                <div className="content_sec">
+                  <h2>{item.activity}</h2>
+                  <span>{item.location}</span>
+                </div>
               </div>
+              <span className="date">{item.date}</span>
             </div>
-            <span className="date">{item.date}</span>
+          ))}
+          <div className="btn_grp">
+            <button 
+              className={cn("btn", isExpanded && "active")} 
+              onClick={toggleExpand}
+            >
+              {isExpanded ? "Hide" : "Show All"}
+            </button>
           </div>
-        ))}
-        <div className="btn_grp">
-          <button 
-            className={cn("btn", isExpanded && "active")} 
-            onClick={toggleExpand}
-          >
-            {isExpanded ? "Hide" : "Show All"}
-          </button>
         </div>
       </div>
 
-      <style jsx global>{`
+      <style>{`
         .stacked-cards-container {
           position: relative;
           max-width: 700px;
@@ -204,6 +206,6 @@ export const Component = () => {
           top: 17px;
         }
       `}</style>
-    </div>
+    </>
   );
 };
