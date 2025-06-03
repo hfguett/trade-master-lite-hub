@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, FC } from "react";
-import * as THREE from "three";
 
+// Simple hyperspeed effect without three.js dependencies for now
 interface HyperspeedOptions {
   onSpeedUp?: (ev: MouseEvent) => void;
   onSlowDown?: (ev: MouseEvent) => void;
@@ -80,137 +80,9 @@ const defaultOptions: HyperspeedOptions = {
   },
 };
 
-// Simplified App class for basic road effect
-class App {
-  container: HTMLElement;
-  renderer: THREE.WebGLRenderer;
-  camera: THREE.PerspectiveCamera;
-  scene: THREE.Scene;
-  clock: THREE.Clock;
-  disposed: boolean = false;
-
-  constructor(container: HTMLElement, options: HyperspeedOptions) {
-    this.container = container;
-    
-    this.renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-    });
-    this.renderer.setSize(container.offsetWidth, container.offsetHeight, false);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    
-    if (this.container.firstChild) {
-      this.container.removeChild(this.container.firstChild);
-    }
-    container.appendChild(this.renderer.domElement);
-
-    this.camera = new THREE.PerspectiveCamera(
-      options.fov,
-      container.offsetWidth / container.offsetHeight,
-      0.1,
-      1000
-    );
-    this.camera.position.set(0, 8, -5);
-
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(options.colors.background);
-    
-    this.scene.fog = new THREE.Fog(
-      options.colors.background,
-      options.length * 0.2,
-      options.length * 2
-    );
-
-    this.clock = new THREE.Clock();
-    
-    this.createRoad(options);
-    this.createLights(options);
-    
-    window.addEventListener("resize", this.onResize);
-    this.onResize();
-    
-    this.tick();
-  }
-
-  createRoad(options: HyperspeedOptions) {
-    const roadGeometry = new THREE.PlaneGeometry(options.roadWidth, options.length, 20, 100);
-    const roadMaterial = new THREE.MeshBasicMaterial({ 
-      color: options.colors.roadColor,
-      transparent: true,
-      opacity: 0.8 
-    });
-    
-    const road = new THREE.Mesh(roadGeometry, roadMaterial);
-    road.rotation.x = -Math.PI / 2;
-    road.position.z = -options.length / 2;
-    this.scene.add(road);
-  }
-
-  createLights(options: HyperspeedOptions) {
-    for (let i = 0; i < 50; i++) {
-      const lightGeometry = new THREE.SphereGeometry(0.1, 8, 8);
-      const lightMaterial = new THREE.MeshBasicMaterial({ 
-        color: i % 2 ? options.colors.leftCars[0] : options.colors.rightCars[0],
-        transparent: true,
-        opacity: 0.8
-      });
-      
-      const light = new THREE.Mesh(lightGeometry, lightMaterial);
-      light.position.x = (i % 2 ? -1 : 1) * (options.roadWidth / 4);
-      light.position.y = 0.5;
-      light.position.z = -i * 10;
-      
-      this.scene.add(light);
-    }
-  }
-
-  onResize = () => {
-    if (!this.container) return;
-    
-    const width = this.container.offsetWidth;
-    const height = this.container.offsetHeight;
-    
-    this.camera.aspect = width / height;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(width, height, false);
-  };
-
-  tick = () => {
-    if (this.disposed) return;
-    
-    const time = this.clock.getElapsedTime();
-    
-    // Animate camera
-    this.camera.position.z += 0.1;
-    if (this.camera.position.z > 50) {
-      this.camera.position.z = -5;
-    }
-    
-    // Animate lights
-    this.scene.children.forEach((child, index) => {
-      if (child instanceof THREE.Mesh && child.geometry instanceof THREE.SphereGeometry) {
-        child.position.z += 2;
-        if (child.position.z > 20) {
-          child.position.z = -500;
-        }
-      }
-    });
-    
-    this.renderer.render(this.scene, this.camera);
-    requestAnimationFrame(this.tick);
-  };
-
-  dispose() {
-    this.disposed = true;
-    window.removeEventListener("resize", this.onResize);
-    this.renderer.dispose();
-    this.scene.clear();
-  }
-}
-
+// CSS-only hyperspeed effect as fallback
 export const Component: FC<ComponentProps> = ({ effectOptions = {} }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const appRef = useRef<App | null>(null);
 
   const mergedOptions: HyperspeedOptions = {
     ...defaultOptions,
@@ -225,26 +97,65 @@ export const Component: FC<ComponentProps> = ({ effectOptions = {} }) => {
     const container = containerRef.current;
     if (!container) return;
 
-    if (appRef.current) {
-      appRef.current.dispose();
+    // Simple CSS animation for hyperspeed effect
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes hyperspeed {
+        0% { transform: translateZ(-1000px) scale(1); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: translateZ(1000px) scale(3); opacity: 0; }
+      }
+      
+      .hyperspeed-particle {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: linear-gradient(45deg, #4f46e5, #06b6d4);
+        border-radius: 50%;
+        animation: hyperspeed linear infinite;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Create particles
+    const particles: HTMLElement[] = [];
+    for (let i = 0; i < 50; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'hyperspeed-particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = Math.random() * 100 + '%';
+      particle.style.animationDuration = (Math.random() * 2 + 1) + 's';
+      particle.style.animationDelay = Math.random() * 2 + 's';
+      container.appendChild(particle);
+      particles.push(particle);
     }
 
-    const app = new App(container, mergedOptions);
-    appRef.current = app;
-
     return () => {
-      if (app) {
-        app.dispose();
+      particles.forEach(particle => {
+        if (particle.parentNode) {
+          particle.parentNode.removeChild(particle);
+        }
+      });
+      if (style.parentNode) {
+        style.parentNode.removeChild(style);
       }
-      appRef.current = null;
     };
   }, [mergedOptions]);
 
   return (
     <div
       ref={containerRef}
-      className="w-full h-full"
-      style={{ position: 'absolute', top: 0, left: 0, zIndex: 0 }}
+      className="w-full h-full relative overflow-hidden"
+      style={{ 
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        zIndex: 0,
+        background: `linear-gradient(45deg, 
+          rgb(${(mergedOptions.colors.background >> 16) & 255}, ${(mergedOptions.colors.background >> 8) & 255}, ${mergedOptions.colors.background & 255}),
+          rgb(${(mergedOptions.colors.roadColor >> 16) & 255}, ${(mergedOptions.colors.roadColor >> 8) & 255}, ${mergedOptions.colors.roadColor & 255})
+        )`
+      }}
     />
   );
 };
