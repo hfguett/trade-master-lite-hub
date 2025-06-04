@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,19 +23,20 @@ import { BotTrading } from "@/components/BotTrading";
 import { RiskManagement } from "@/components/RiskManagement";
 import { Backtesting } from "@/components/Backtesting";
 import { PositionCalculator } from "@/components/PositionCalculator";
-import { PriceAlerts } from "@/components/PriceAlerts";
 import { PnLTracker } from "@/components/PnLTracker";
 import { NotesManager } from "@/components/NotesManager";
 import { ScreenshotManager } from "@/components/ScreenshotManager";
 import { ProfilePage } from "@/components/ProfilePage";
 import { SettingsPage } from "@/components/SettingsPage";
 import { NotificationsCenter } from "@/components/NotificationsCenter";
-import { TradingChart } from "@/components/ui/TradingChart";
+import { TradingWorkspace } from "@/components/TradingWorkspace";
 import { WorldClock } from "@/components/WorldClock";
 import { GoalPlanningWidget } from "@/components/GoalPlanningWidget";
 import { EconomicCalendar } from "@/components/EconomicCalendar";
-import { TradingWorkspace } from "@/components/TradingWorkspace";
 import { RingProgress, BarProgress } from "@/components/ui/enhanced-progress";
+import { AdvancedChart } from "@/components/ui/advanced-chart";
+import { AlertSystem } from "@/components/ui/alert-system";
+import { QuickAddModal } from "@/components/ui/quick-add-modal";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -44,6 +44,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const [showQuickAdd, setShowQuickAdd] = useState(false);
   const dashboardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -180,7 +181,7 @@ const Dashboard = () => {
       case "position-calculator":
         return <PositionCalculator />;
       case "price-alerts":
-        return <PriceAlerts />;
+        return <AlertSystem />;
       case "pnl-tracker":
         return <PnLTracker />;
       case "drawing":
@@ -202,7 +203,7 @@ const Dashboard = () => {
             {/* Enhanced Stats Grid with Progress and Visible Values */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
-                <Card key={index} className="stat-card glass-effect border-primary/20 hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20">
+                <Card key={index} className="stat-card glass-effect border-green-500/20 hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <div>
@@ -232,16 +233,16 @@ const Dashboard = () => {
 
             {/* Main Content Grid */}
             <div className="grid lg:grid-cols-3 gap-6">
-              <Card className="lg:col-span-2 glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
+              <Card className="lg:col-span-2 glass-effect border-green-500/20 hover:scale-105 transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between text-white">
                     Portfolio Performance
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="border-primary/50 hover:border-primary text-white hover:bg-primary hover:text-black">
+                      <Button variant="outline" size="sm" className="border-green-500/50 hover:border-green-500 text-white hover:bg-green-500 hover:text-black">
                         <Filter className="h-4 w-4 mr-2" />
                         Filter
                       </Button>
-                      <Button variant="outline" size="sm" className="border-primary/50 hover:border-primary text-white hover:bg-primary hover:text-black">
+                      <Button variant="outline" size="sm" className="border-green-500/50 hover:border-green-500 text-white hover:bg-green-500 hover:text-black">
                         <Download className="h-4 w-4 mr-2" />
                         Export
                       </Button>
@@ -249,21 +250,24 @@ const Dashboard = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <TradingChart 
-                    type="area" 
+                  <AdvancedChart 
                     data={portfolioData} 
                     height={300}
-                    animate={true}
+                    showControls={true}
+                    title=""
                   />
                 </CardContent>
               </Card>
 
-              <Card className="glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
+              <Card className="glass-effect border-green-500/20 hover:scale-105 transition-all duration-300">
                 <CardHeader>
                   <CardTitle className="text-white">Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white transition-all duration-300 hover:scale-105">
+                  <Button 
+                    className="w-full bg-green-600 hover:bg-green-700 text-white transition-all duration-300 hover:scale-105"
+                    onClick={() => setShowQuickAdd(true)}
+                  >
                     <Plus className="h-4 w-4 mr-2" />
                     Add Trade
                   </Button>
@@ -295,13 +299,15 @@ const Dashboard = () => {
               </Card>
             </div>
 
+            {/* Integrated Widgets Grid */}
             <div className="grid lg:grid-cols-3 gap-6">
               <WorldClock />
               <GoalPlanningWidget />
               <EconomicCalendar />
             </div>
 
-            <Card className="glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
+            {/* Recent Trades */}
+            <Card className="glass-effect border-green-500/20 hover:scale-105 transition-all duration-300">
               <CardHeader>
                 <CardTitle className="text-white">Recent Trades</CardTitle>
               </CardHeader>
@@ -310,7 +316,7 @@ const Dashboard = () => {
                   {recentTrades.map((trade, index) => (
                     <div 
                       key={index} 
-                      className="flex items-center justify-between p-4 glass-effect rounded-lg hover:scale-105 transition-all duration-300 border border-primary/10"
+                      className="flex items-center justify-between p-4 glass-effect rounded-lg hover:scale-105 transition-all duration-300 border border-green-500/10"
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <div className="flex items-center space-x-4">
@@ -408,13 +414,18 @@ const Dashboard = () => {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold mb-2 text-white">
-                {getPageTitle()}
+                {/* getPageTitle() */}
+                Dashboard Overview
               </h1>
               <p className="text-white/70">
-                {getPageDescription()}
+                {/* getPageDescription() */}
+                Your trading performance at a glance
               </p>
             </div>
-            <Button className="bg-green-600 hover:bg-green-700 text-white transition-all duration-300 hover:scale-105">
+            <Button 
+              className="bg-green-600 hover:bg-green-700 text-white transition-all duration-300 hover:scale-105"
+              onClick={() => setShowQuickAdd(true)}
+            >
               <Plus className="h-4 w-4 mr-2" />
               Quick Add
             </Button>
@@ -423,6 +434,11 @@ const Dashboard = () => {
           {renderContent()}
         </div>
       </main>
+
+      <QuickAddModal 
+        isOpen={showQuickAdd} 
+        onClose={() => setShowQuickAdd(false)} 
+      />
     </div>
   );
 };
