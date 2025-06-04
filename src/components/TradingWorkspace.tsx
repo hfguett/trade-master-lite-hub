@@ -4,18 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { RingProgress, BarProgress } from "@/components/ui/enhanced-progress";
 import { 
   BarChart3, 
   BookOpen, 
   Pencil, 
-  Layers, 
   FileText,
   TrendingUp,
   TrendingDown,
-  Calendar,
   Target,
-  AlertTriangle,
   CheckCircle
 } from "lucide-react";
 import { VectorDrawingCanvas } from "@/components/VectorDrawingCanvas";
@@ -44,7 +41,7 @@ export const TradingWorkspace = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-primary">Trading Workspace</h1>
-          <p className="text-slate-400">Manage your trades, drawings, and analysis</p>
+          <p className="text-slate-300">Manage your trades, drawings, and analysis</p>
         </div>
         <div className="flex gap-2">
           {["week", "month", "quarter"].map((period) => (
@@ -53,7 +50,7 @@ export const TradingWorkspace = () => {
               variant={selectedPeriod === period ? "default" : "outline"}
               size="sm"
               onClick={() => setSelectedPeriod(period)}
-              className={selectedPeriod === period ? 'bg-primary text-white' : 'border-primary/50 hover:border-primary'}
+              className={selectedPeriod === period ? 'bg-primary text-white' : 'border-primary/50 hover:border-primary text-primary'}
             >
               {period.charAt(0).toUpperCase() + period.slice(1)}
             </Button>
@@ -62,24 +59,20 @@ export const TradingWorkspace = () => {
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-5 glass-effect border-primary/20">
-          <TabsTrigger value="overview" className="data-[state=active]:bg-primary data-[state=active]:text-slate-900">
+        <TabsList className="grid w-full grid-cols-4 glass-effect border-primary/20">
+          <TabsTrigger value="overview" className="data-[state=active]:bg-primary data-[state=active]:text-white">
             <BarChart3 className="h-4 w-4 mr-2" />
             Overview
           </TabsTrigger>
-          <TabsTrigger value="trades" className="data-[state=active]:bg-primary data-[state=active]:text-slate-900">
+          <TabsTrigger value="trades" className="data-[state=active]:bg-primary data-[state=active]:text-white">
             <BookOpen className="h-4 w-4 mr-2" />
             Trade Journal
           </TabsTrigger>
-          <TabsTrigger value="drawing" className="data-[state=active]:bg-primary data-[state=active]:text-slate-900">
+          <TabsTrigger value="drawing" className="data-[state=active]:bg-primary data-[state=active]:text-white">
             <Pencil className="h-4 w-4 mr-2" />
-            Vector Drawing
+            Vector Drawing & Diagrams
           </TabsTrigger>
-          <TabsTrigger value="diagrams" className="data-[state=active]:bg-primary data-[state=active]:text-slate-900">
-            <Layers className="h-4 w-4 mr-2" />
-            Diagrams
-          </TabsTrigger>
-          <TabsTrigger value="notes" className="data-[state=active]:bg-primary data-[state=active]:text-slate-900">
+          <TabsTrigger value="notes" className="data-[state=active]:bg-primary data-[state=active]:text-white">
             <FileText className="h-4 w-4 mr-2" />
             Notes
           </TabsTrigger>
@@ -87,51 +80,48 @@ export const TradingWorkspace = () => {
 
         <TabsContent value="overview" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <Card className="glass-effect border-primary/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-slate-400">Total Trades</p>
-                    <p className="text-2xl font-bold text-primary">{performanceData.totalTrades}</p>
-                  </div>
-                  <BarChart3 className="h-8 w-8 text-primary" />
+            <Card className="glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <p className="text-sm text-primary mb-2">Total Trades</p>
+                <p className="text-2xl font-bold text-primary">{performanceData.totalTrades}</p>
+                <div className="mt-4">
+                  <RingProgress 
+                    value={75} 
+                    size={80} 
+                    strokeWidth={8}
+                    showValue={false}
+                  />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="glass-effect border-primary/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-slate-400">Win Rate</p>
-                    <p className="text-2xl font-bold text-green-400">{performanceData.winRate}%</p>
-                  </div>
-                  <TrendingUp className="h-8 w-8 text-green-400" />
+            <Card className="glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <p className="text-sm text-primary mb-2">Win Rate</p>
+                <p className="text-2xl font-bold text-green-400">{performanceData.winRate}%</p>
+                <div className="mt-4">
+                  <BarProgress 
+                    value={performanceData.winRate}
+                    showValue={false}
+                    height="h-4"
+                  />
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="glass-effect border-primary/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-slate-400">P&L</p>
-                    <p className="text-2xl font-bold text-green-400">${performanceData.profitLoss}</p>
-                  </div>
-                  <Target className="h-8 w-8 text-green-400" />
-                </div>
+            <Card className="glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <p className="text-sm text-primary mb-2">P&L</p>
+                <p className="text-2xl font-bold text-green-400">${performanceData.profitLoss}</p>
+                <Target className="h-8 w-8 text-green-400 mx-auto mt-2" />
               </CardContent>
             </Card>
 
-            <Card className="glass-effect border-primary/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-slate-400">Best Trade</p>
-                    <p className="text-2xl font-bold text-green-400">${performanceData.bestTrade}</p>
-                  </div>
-                  <CheckCircle className="h-8 w-8 text-green-400" />
-                </div>
+            <Card className="glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <p className="text-sm text-primary mb-2">Best Trade</p>
+                <p className="text-2xl font-bold text-green-400">${performanceData.bestTrade}</p>
+                <CheckCircle className="h-8 w-8 text-green-400 mx-auto mt-2" />
               </CardContent>
             </Card>
           </div>
@@ -141,22 +131,29 @@ export const TradingWorkspace = () => {
               <CardTitle className="text-primary">Performance Overview</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Win Rate</span>
-                  <div className="flex items-center gap-2">
-                    <Progress value={performanceData.winRate} className="w-20" />
-                    <span className="text-green-400">{performanceData.winRate}%</span>
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <BarProgress 
+                      value={performanceData.winRate}
+                      label="Win Rate"
+                      color="#10b981"
+                    />
+                    <BarProgress 
+                      value={Math.abs(performanceData.avgWin) / 10}
+                      label="Average Win"
+                      color="#3b82f6"
+                    />
                   </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-slate-800/50 rounded-lg">
-                    <p className="text-sm text-slate-400">Average Win</p>
-                    <p className="text-lg font-semibold text-green-400">${performanceData.avgWin}</p>
-                  </div>
-                  <div className="p-4 bg-slate-800/50 rounded-lg">
-                    <p className="text-sm text-slate-400">Average Loss</p>
-                    <p className="text-lg font-semibold text-red-400">${performanceData.avgLoss}</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-4 glass-effect rounded-lg text-center">
+                      <p className="text-sm text-primary mb-2">Average Win</p>
+                      <p className="text-lg font-semibold text-green-400">${performanceData.avgWin}</p>
+                    </div>
+                    <div className="p-4 glass-effect rounded-lg text-center">
+                      <p className="text-sm text-primary mb-2">Average Loss</p>
+                      <p className="text-lg font-semibold text-red-400">${performanceData.avgLoss}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -172,19 +169,19 @@ export const TradingWorkspace = () => {
             <CardContent>
               <div className="space-y-4">
                 {recentTrades.map((trade) => (
-                  <div key={trade.id} className="flex items-center justify-between p-4 bg-slate-800/50 rounded-lg">
+                  <div key={trade.id} className="flex items-center justify-between p-4 glass-effect rounded-lg hover:scale-105 transition-all duration-300">
                     <div className="flex items-center gap-4">
                       <Badge variant={trade.type === "Long" ? "default" : "secondary"}>
                         {trade.type}
                       </Badge>
                       <div>
-                        <p className="font-semibold text-slate-100">{trade.pair}</p>
-                        <p className="text-sm text-slate-400">{trade.date}</p>
+                        <p className="font-semibold text-primary">{trade.pair}</p>
+                        <p className="text-sm text-slate-300">{trade.date}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-slate-400">Entry: ${trade.entry}</p>
-                      <p className="text-sm text-slate-400">Exit: ${trade.exit}</p>
+                      <p className="text-sm text-slate-300">Entry: ${trade.entry}</p>
+                      <p className="text-sm text-slate-300">Exit: ${trade.exit}</p>
                     </div>
                     <div className={`text-right ${trade.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                       <p className="font-semibold">${trade.pnl}</p>
@@ -201,24 +198,16 @@ export const TradingWorkspace = () => {
           <VectorDrawingCanvas />
         </TabsContent>
 
-        <TabsContent value="diagrams" className="mt-6">
-          <Card className="glass-effect border-primary/20">
-            <CardHeader>
-              <CardTitle className="text-primary">Trading Diagrams</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-slate-400">Diagram builder coming soon...</p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
         <TabsContent value="notes" className="mt-6">
           <Card className="glass-effect border-primary/20">
             <CardHeader>
               <CardTitle className="text-primary">Trading Notes</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-slate-400">Notes manager coming soon...</p>
+              <div className="p-8 text-center">
+                <FileText className="h-16 w-16 text-primary/50 mx-auto mb-4" />
+                <p className="text-slate-300">Notes manager will be implemented here</p>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

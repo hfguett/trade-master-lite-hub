@@ -22,10 +22,8 @@ import { AnalyticsDashboard } from "@/components/AnalyticsDashboard";
 import { AISignals } from "@/components/AISignals";
 import { BotTrading } from "@/components/BotTrading";
 import { RiskManagement } from "@/components/RiskManagement";
-import { EnhancedDrawingJournal } from "@/components/EnhancedDrawingJournal";
 import { NotesManager } from "@/components/NotesManager";
 import { ScreenshotManager } from "@/components/ScreenshotManager";
-import { DiagramBuilder } from "@/components/DiagramBuilder";
 import { ProfilePage } from "@/components/ProfilePage";
 import { SettingsPage } from "@/components/SettingsPage";
 import { NotificationsCenter } from "@/components/NotificationsCenter";
@@ -33,6 +31,8 @@ import { TradingChart } from "@/components/ui/TradingChart";
 import { WorldClock } from "@/components/WorldClock";
 import { GoalPlanningWidget } from "@/components/GoalPlanningWidget";
 import { EconomicCalendar } from "@/components/EconomicCalendar";
+import { TradingWorkspace } from "@/components/TradingWorkspace";
+import { RingProgress, BarProgress } from "@/components/ui/enhanced-progress";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -76,14 +76,6 @@ const Dashboard = () => {
         }
       );
 
-      gsap.to(".floating-chart", {
-        y: -10,
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "power2.inOut"
-      });
-
     }, dashboardRef);
 
     return () => ctx.revert();
@@ -95,28 +87,32 @@ const Dashboard = () => {
       value: "$24,847.32",
       change: "+12.5%",
       changeType: "positive" as const,
-      icon: <TrendingUp className="h-4 w-4" />
+      icon: <TrendingUp className="h-4 w-4" />,
+      progress: 78
     },
     {
       title: "Today's P&L",
       value: "+$347.82",
       change: "+2.1%",
       changeType: "positive" as const,
-      icon: <TrendingUp className="h-4 w-4" />
+      icon: <TrendingUp className="h-4 w-4" />,
+      progress: 65
     },
     {
       title: "Win Rate",
       value: "68.2%",
       change: "+5.3%",
       changeType: "positive" as const,
-      icon: <Target className="h-4 w-4" />
+      icon: <Target className="h-4 w-4" />,
+      progress: 68
     },
     {
       title: "Total Trades",
       value: "147",
       change: "+8",
       changeType: "neutral" as const,
-      icon: <BarChart3 className="h-4 w-4" />
+      icon: <BarChart3 className="h-4 w-4" />,
+      progress: 85
     }
   ];
 
@@ -176,13 +172,12 @@ const Dashboard = () => {
       case "risk-management":
         return <RiskManagement />;
       case "drawing":
-        return <EnhancedDrawingJournal />;
+      case "diagrams":
+        return <TradingWorkspace />;
       case "notes":
         return <NotesManager />;
       case "screenshots":
         return <ScreenshotManager />;
-      case "diagrams":
-        return <DiagramBuilder />;
       case "profile":
         return <ProfilePage />;
       case "settings":
@@ -192,23 +187,29 @@ const Dashboard = () => {
       default:
         return (
           <div className="space-y-6 main-content">
-            {/* Stats Grid */}
+            {/* Enhanced Stats Grid with Progress */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
-                <Card key={index} className="stat-card glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300 hover:scale-105">
+                <Card key={index} className="stat-card glass-effect border-primary/20 hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20">
                   <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between mb-4">
                       <div>
-                        <p className="text-sm text-mint/70 mb-1">{stat.title}</p>
-                        <p className="text-2xl font-bold text-mint">{stat.value}</p>
+                        <p className="text-sm text-primary/70 mb-1">{stat.title}</p>
+                        <p className="text-2xl font-bold text-primary">{stat.value}</p>
                         <div className="flex items-center mt-2">
                           {stat.icon}
-                          <span className={`text-sm ml-1 ${
-                            stat.changeType === 'positive' ? 'text-mint' : 'text-mint/70'
-                          }`}>
+                          <span className="text-sm ml-1 text-primary">
                             {stat.change}
                           </span>
                         </div>
+                      </div>
+                      <div className="w-16 h-16">
+                        <RingProgress 
+                          value={stat.progress} 
+                          size={64}
+                          strokeWidth={6}
+                          showValue={false}
+                        />
                       </div>
                     </div>
                   </CardContent>
@@ -218,16 +219,16 @@ const Dashboard = () => {
 
             {/* Main Content Grid */}
             <div className="grid lg:grid-cols-3 gap-6">
-              <Card className="lg:col-span-2 glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300 floating-chart">
+              <Card className="lg:col-span-2 glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between text-mint">
+                  <CardTitle className="flex items-center justify-between text-primary">
                     Portfolio Performance
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue">
+                      <Button variant="outline" size="sm" className="border-primary/50 hover:border-primary text-primary hover:bg-primary hover:text-white">
                         <Filter className="h-4 w-4 mr-2" />
                         Filter
                       </Button>
-                      <Button variant="outline" size="sm" className="border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue">
+                      <Button variant="outline" size="sm" className="border-primary/50 hover:border-primary text-primary hover:bg-primary hover:text-white">
                         <Download className="h-4 w-4 mr-2" />
                         Export
                       </Button>
@@ -244,18 +245,18 @@ const Dashboard = () => {
                 </CardContent>
               </Card>
 
-              <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
+              <Card className="glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
                 <CardHeader>
-                  <CardTitle className="text-mint">Quick Actions</CardTitle>
+                  <CardTitle className="text-primary">Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button className="w-full mint-button transition-all duration-300 hover:scale-105">
+                  <Button className="w-full bg-primary hover:bg-primary/80 text-white transition-all duration-300 hover:scale-105">
                     <Plus className="h-4 w-4 mr-2" />
                     Add Trade
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105"
+                    className="w-full border-primary/50 hover:border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105"
                     onClick={() => setActiveTab("ai-signals")}
                   >
                     <Target className="h-4 w-4 mr-2" />
@@ -263,7 +264,7 @@ const Dashboard = () => {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105"
+                    className="w-full border-primary/50 hover:border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105"
                     onClick={() => setActiveTab("bot-trading")}
                   >
                     <BarChart3 className="h-4 w-4 mr-2" />
@@ -271,7 +272,7 @@ const Dashboard = () => {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full border-mint/50 hover-mint-border text-mint hover:bg-mint hover:text-darkest-blue transition-all duration-300 hover:scale-105"
+                    className="w-full border-primary/50 hover:border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105"
                     onClick={() => setActiveTab("risk-management")}
                   >
                     <TrendingUp className="h-4 w-4 mr-2" />
@@ -287,38 +288,36 @@ const Dashboard = () => {
               <EconomicCalendar />
             </div>
 
-            <Card className="glass-effect-strong border-mint/20 hover-mint-border transition-all duration-300">
+            <Card className="glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-mint">Recent Trades</CardTitle>
+                <CardTitle className="text-primary">Recent Trades</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {recentTrades.map((trade, index) => (
                     <div 
                       key={index} 
-                      className="flex items-center justify-between p-4 bg-darkest-blue/50 rounded-lg hover:bg-darkest-blue/70 transition-all duration-300 hover:scale-102 animate-slide-up border border-mint/10"
+                      className="flex items-center justify-between p-4 glass-effect rounded-lg hover:scale-105 transition-all duration-300 border border-primary/10"
                       style={{ animationDelay: `${index * 100}ms` }}
                     >
                       <div className="flex items-center space-x-4">
                         <Badge 
                           variant={trade.type === "LONG" ? "default" : "destructive"} 
-                          className={`w-16 justify-center ${
-                            trade.type === "LONG" ? "mint-button" : ""
-                          }`}
+                          className="w-16 justify-center"
                         >
                           {trade.type}
                         </Badge>
                         <div>
-                          <p className="font-semibold text-mint">{trade.symbol}</p>
-                          <p className="text-sm text-mint/70">{trade.date}</p>
+                          <p className="font-semibold text-primary">{trade.symbol}</p>
+                          <p className="text-sm text-slate-300">{trade.date}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-mint/70 font-mono">
+                        <p className="text-sm text-slate-300 font-mono">
                           {trade.entry} → {trade.exit}
                         </p>
                         <p className={`font-semibold font-mono ${
-                          trade.pnl.startsWith('+') ? 'text-mint' : 'text-red-400'
+                          trade.pnl.startsWith('+') ? 'text-green-400' : 'text-red-400'
                         }`}>
                           {trade.pnl}
                         </p>
@@ -345,10 +344,10 @@ const Dashboard = () => {
       "ai-signals": "AI Trading Signals",
       "bot-trading": "Automated Trading",
       "risk-management": "Risk Management",
-      drawing: "Drawing Journal",
+      drawing: "Drawing & Diagrams",
+      diagrams: "Drawing & Diagrams",
       notes: "Notes Manager",
       screenshots: "Screenshots",
-      diagrams: "Diagrams",
       profile: "Profile",
       settings: "Settings",
       notifications: "Notifications"
@@ -368,10 +367,10 @@ const Dashboard = () => {
       "ai-signals": "AI-powered trading recommendations",
       "bot-trading": "Manage automated trading strategies",
       "risk-management": "Monitor and control trading risks",
-      drawing: "Sketch and analyze trade setups",
+      drawing: "Vector drawings and strategy diagrams",
+      diagrams: "Vector drawings and strategy diagrams",
       notes: "Organize your trading notes and ideas",
       screenshots: "Manage trade confirmation screenshots",
-      diagrams: "Build trading strategy flow charts",
       profile: "Manage your trading profile and achievements",
       settings: "Customize your trading experience",
       notifications: "Stay updated with alerts and notifications"
@@ -380,21 +379,21 @@ const Dashboard = () => {
   };
 
   return (
-    <div ref={dashboardRef} className="min-h-screen bg-darker-blue cyber-grid text-foreground flex">
+    <div ref={dashboardRef} className="min-h-screen bg-slate-950 text-foreground flex">
       <EnhancedSidebar activeTab={activeTab} onTabChange={setActiveTab} />
       
       <main className="flex-1 p-6 ml-16 lg:ml-64 transition-all duration-300">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold mb-2 text-mint">
+              <h1 className="text-3xl font-bold mb-2 text-primary">
                 {getPageTitle()}
               </h1>
-              <p className="text-mint/70">
+              <p className="text-slate-300">
                 {getPageDescription()}
               </p>
             </div>
-            <Button className="mint-button transition-all duration-300 hover:scale-105">
+            <Button className="bg-primary hover:bg-primary/80 text-white transition-all duration-300 hover:scale-105">
               <Plus className="h-4 w-4 mr-2" />
               Quick Add
             </Button>
