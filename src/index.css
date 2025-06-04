@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
@@ -139,6 +138,40 @@
   .font-inter {
     font-family: 'Inter', system-ui, sans-serif;
   }
+
+  /* Button color overrides */
+  .btn-primary {
+    background-color: #06b6d4 !important;
+    color: #0f172a !important;
+    border: 1px solid #06b6d4 !important;
+  }
+
+  .btn-primary:hover {
+    background-color: #0891b2 !important;
+    color: #0f172a !important;
+  }
+
+  .btn-secondary {
+    background-color: #8b5cf6 !important;
+    color: white !important;
+    border: 1px solid #8b5cf6 !important;
+  }
+
+  .btn-secondary:hover {
+    background-color: #7c3aed !important;
+    color: white !important;
+  }
+
+  .btn-outline {
+    background-color: transparent !important;
+    color: #06b6d4 !important;
+    border: 1px solid #06b6d4 !important;
+  }
+
+  .btn-outline:hover {
+    background-color: #06b6d4 !important;
+    color: #0f172a !important;
+  }
 }
 
 @layer utilities {
@@ -239,12 +272,14 @@
   }
 
   .primary-button {
-    @apply bg-cyan-500 text-slate-900 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg;
+    @apply bg-primary text-slate-900 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg;
     border: 2px solid #06b6d4;
+    color: #0f172a !important;
   }
 
   .primary-button:hover {
     box-shadow: 0 0 25px rgba(6, 182, 212, 0.4), 0 0 50px rgba(6, 182, 212, 0.2);
+    color: #0f172a !important;
   }
 
   .card-border {
@@ -260,6 +295,51 @@
 
   .inner-glow {
     box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.1);
+  }
+
+  /* Button styling fixes */
+  button {
+    color: white !important;
+  }
+
+  .bg-white {
+    background-color: #06b6d4 !important;
+    color: #0f172a !important;
+  }
+
+  .bg-white:hover {
+    background-color: #0891b2 !important;
+    color: #0f172a !important;
+  }
+
+  /* Variant overrides for better visibility */
+  [data-variant="default"] {
+    background-color: #06b6d4 !important;
+    color: #0f172a !important;
+    border-color: #06b6d4 !important;
+  }
+
+  [data-variant="outline"] {
+    background-color: transparent !important;
+    color: #06b6d4 !important;
+    border-color: #06b6d4 !important;
+  }
+
+  [data-variant="outline"]:hover {
+    background-color: #06b6d4 !important;
+    color: #0f172a !important;
+  }
+
+  [data-variant="secondary"] {
+    background-color: #1e293b !important;
+    color: white !important;
+    border-color: #374151 !important;
+  }
+
+  [data-variant="destructive"] {
+    background-color: #ef4444 !important;
+    color: white !important;
+    border-color: #ef4444 !important;
   }
 
   /* Gradient border animations */
@@ -564,4 +644,31 @@
 .ui-button,
 .ui-badge {
   color: white !important;
+}
+
+/* Enhanced button styles for better visibility */
+.lucide {
+  color: inherit !important;
+}
+
+/* Make sure all buttons have proper contrast */
+button[class*="bg-primary"] {
+  background-color: #06b6d4 !important;
+  color: #0f172a !important;
+}
+
+button[class*="bg-primary"]:hover {
+  background-color: #0891b2 !important;
+  color: #0f172a !important;
+}
+
+button[class*="border-primary"] {
+  border-color: #06b6d4 !important;
+  color: #06b6d4 !important;
+}
+
+button[class*="border-primary"]:hover {
+  background-color: #06b6d4 !important;
+  color: #0f172a !important;
+  border-color: #06b6d4 !important;
 }
