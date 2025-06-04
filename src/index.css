@@ -1,674 +1,175 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-
-    /* Custom colors - Dark Blue Theme */
-    --primary-blue: 217 91% 60%;
-    --primary-blue-light: 213 93% 68%;
-    --secondary-blue: 221 83% 53%;
-    --accent-blue: 205 100% 50%;
-    --success-blue: 199 89% 48%;
-    --dark-blue: 220 26% 8%;
-    --darker-blue: 220 30% 6%;
-    --darkest-blue: 220 35% 4%;
-  }
-
-  .dark {
-    --background: 220 30% 3%;
-    --foreground: 0 0% 100%;
-
-    --card: 220 26% 6%;
-    --card-foreground: 0 0% 100%;
-
-    --popover: 220 26% 6%;
-    --popover-foreground: 0 0% 100%;
-
-    --primary: 217 91% 60%;
-    --primary-foreground: 220 30% 3%;
-
-    --secondary: 220 26% 8%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 220 26% 8%;
-    --muted-foreground: 0 0% 80%;
-
-    --accent: 220 26% 8%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 26% 12%;
-    --input: 220 26% 8%;
-    --ring: 217 91% 60%;
-
-    --sidebar-background: 220 30% 3%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 217 91% 60%;
-    --sidebar-primary-foreground: 220 30% 3%;
-    --sidebar-accent: 220 26% 6%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 220 26% 12%;
-    --sidebar-ring: 217 91% 60%;
-  }
+* {
+  color: white !important;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-slate-950 text-white;
-    font-family: 'Inter', system-ui, sans-serif;
-    background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 70%, #020617 100%);
-    min-height: 100vh;
-    color: white !important;
-  }
-
-  /* Force white text on all elements */
-  h1, h2, h3, h4, h5, h6, p, span, div, a, label, button {
-    color: white !important;
-  }
-
-  /* Exception for specific components that need different colors */
-  .text-primary {
-    color: #06b6d4 !important;
-  }
-  
-  .text-green-400 {
-    color: #4ade80 !important;
-  }
-  
-  .text-red-400 {
-    color: #f87171 !important;
-  }
-  
-  .text-mint {
-    color: #06b6d4 !important;
-  }
-
-  .font-mono {
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .font-inter {
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-
-  /* Button color overrides */
-  .btn-primary {
-    background-color: #06b6d4 !important;
-    color: #0f172a !important;
-    border: 1px solid #06b6d4 !important;
-  }
-
-  .btn-primary:hover {
-    background-color: #0891b2 !important;
-    color: #0f172a !important;
-  }
-
-  .btn-secondary {
-    background-color: #8b5cf6 !important;
-    color: white !important;
-    border: 1px solid #8b5cf6 !important;
-  }
-
-  .btn-secondary:hover {
-    background-color: #7c3aed !important;
-    color: white !important;
-  }
-
-  .btn-outline {
-    background-color: transparent !important;
-    color: #06b6d4 !important;
-    border: 1px solid #06b6d4 !important;
-  }
-
-  .btn-outline:hover {
-    background-color: #06b6d4 !important;
-    color: #0f172a !important;
-  }
+/* Dark theme with proper contrast */
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: white;
+  min-height: 100vh;
 }
 
-@layer utilities {
-  .text-primary {
-    color: #06b6d4 !important;
-  }
-  
-  .text-primary-light {
-    color: #67e8f9 !important;
-  }
-  
-  .bg-primary {
-    background-color: #06b6d4;
-  }
-  
-  .bg-primary-light {
-    background-color: #67e8f9;
-  }
-  
-  .text-secondary {
-    color: #8b5cf6 !important;
-  }
-  
-  .bg-secondary {
-    background-color: #8b5cf6;
-  }
-  
-  .text-accent {
-    color: #3b82f6 !important;
-  }
-  
-  .bg-accent {
-    background-color: #3b82f6;
-  }
-  
-  .text-white {
-    color: white !important;
-  }
-  
-  .text-slate-100 {
-    color: #f1f5f9 !important;
-  }
-  
-  .text-slate-300 {
-    color: #cbd5e1 !important;
-  }
-  
-  .text-slate-400 {
-    color: #94a3b8 !important;
-  }
-
-  .text-gray-400 {
-    color: #9ca3af !important;
-  }
-
-  .text-gray-300 {
-    color: #d1d5db !important;
-  }
-  
-  .bg-slate-800 {
-    background-color: #1e293b;
-  }
-  
-  .bg-slate-900 {
-    background-color: #0f172a;
-  }
-
-  .bg-slate-950 {
-    background-color: #020617;
-  }
-  
-  .border-primary {
-    border-color: #06b6d4;
-  }
-  
-  .glass-effect {
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(6, 182, 212, 0.2);
-  }
-
-  .glass-effect-strong {
-    background: rgba(2, 6, 23, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(6, 182, 212, 0.3);
-  }
-
-  .glass {
-    background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(12px);
-  }
-
-  .cyber-grid {
-    background-image: 
-      linear-gradient(rgba(6, 182, 212, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(6, 182, 212, 0.1) 1px, transparent 1px);
-    background-size: 50px 50px;
-  }
-
-  .primary-button {
-    @apply bg-primary text-slate-900 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg;
-    border: 2px solid #06b6d4;
-    color: #0f172a !important;
-  }
-
-  .primary-button:hover {
-    box-shadow: 0 0 25px rgba(6, 182, 212, 0.4), 0 0 50px rgba(6, 182, 212, 0.2);
-    color: #0f172a !important;
-  }
-
-  .card-border {
-    background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(2, 6, 23, 0.95));
-    border: 1px solid rgba(6, 182, 212, 0.2);
-    backdrop-filter: blur(16px);
-  }
-
-  .gradient-border {
-    background: linear-gradient(145deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1));
-    border: 1px solid rgba(6, 182, 212, 0.3);
-  }
-
-  .inner-glow {
-    box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.1);
-  }
-
-  /* Button styling fixes */
-  button {
-    color: white !important;
-  }
-
-  .bg-white {
-    background-color: #06b6d4 !important;
-    color: #0f172a !important;
-  }
-
-  .bg-white:hover {
-    background-color: #0891b2 !important;
-    color: #0f172a !important;
-  }
-
-  /* Variant overrides for better visibility */
-  [data-variant="default"] {
-    background-color: #06b6d4 !important;
-    color: #0f172a !important;
-    border-color: #06b6d4 !important;
-  }
-
-  [data-variant="outline"] {
-    background-color: transparent !important;
-    color: #06b6d4 !important;
-    border-color: #06b6d4 !important;
-  }
-
-  [data-variant="outline"]:hover {
-    background-color: #06b6d4 !important;
-    color: #0f172a !important;
-  }
-
-  [data-variant="secondary"] {
-    background-color: #1e293b !important;
-    color: white !important;
-    border-color: #374151 !important;
-  }
-
-  [data-variant="destructive"] {
-    background-color: #ef4444 !important;
-    color: white !important;
-    border-color: #ef4444 !important;
-  }
-
-  /* Gradient border animations */
-  .gradient-border-component {
-    background-clip: padding-box, border-box;
-    background-origin: padding-box, border-box;
-  }
-
-  .gradient-border-auto {
-    animation: gradient-rotate var(--animation-duration) linear infinite;
-  }
-
-  .gradient-border-hover:hover {
-    animation: gradient-rotate var(--animation-duration) linear infinite;
-  }
-
-  .gradient-border-stop-hover {
-    animation: gradient-rotate var(--animation-duration) linear infinite;
-  }
-
-  .gradient-border-stop-hover:hover {
-    animation-play-state: paused;
-  }
-
-  @keyframes gradient-rotate {
-    from {
-      --gradient-angle: 0deg;
-    }
-    to {
-      --gradient-angle: 360deg;
-    }
-  }
-
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-
-  @keyframes dataStream {
-    0% {
-      stroke-dashoffset: 20;
-    }
-    100% {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  @keyframes schemaPulse {
-    0%, 100% {
-      transform: scale(1);
-      opacity: 0.8;
-    }
-    50% {
-      transform: scale(1.02);
-      opacity: 1;
-    }
-  }
-
-  @keyframes dashProgress {
-    from {
-      stroke-dashoffset: 100%;
-    }
-    to {
-      stroke-dashoffset: var(--dash-offset);
-    }
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .animate-fade-in-up {
-    animation: fadeInUp 0.6s ease-out;
-  }
-
-  .animate-scale-in {
-    animation: scaleIn 0.5s ease-out;
-  }
-
-  .sidebar-collapsed {
-    width: 4rem;
-  }
-
-  .sidebar-expanded {
-    width: 16rem;
-  }
-  
-  @keyframes grid {
-    0% {
-      transform: translateY(-50%);
-    }
-    100% {
-      transform: translateY(0);
-    }
-  }
-  
-  .animate-grid {
-    animation: grid 15s linear infinite;
-  }
-
-  /* Enhanced hover effects */
-  .hover-lift {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .hover-lift:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  }
-
-  .hover-glow {
-    transition: all 0.3s ease;
-  }
-
-  .hover-glow:hover {
-    box-shadow: 0 0 20px rgba(6, 182, 212, 0.4), 0 0 40px rgba(6, 182, 212, 0.2);
-  }
-
-  /* Force white text on all common elements */
-  .text-black {
-    color: white !important;
-  }
-
-  .text-gray-900 {
-    color: white !important;
-  }
-
-  .text-gray-800 {
-    color: white !important;
-  }
-
-  .text-gray-700 {
-    color: white !important;
-  }
-
-  .text-gray-600 {
-    color: #d1d5db !important;
-  }
-
-  .text-gray-500 {
-    color: #9ca3af !important;
-  }
-
-  /* Muted text should be lighter but still readable */
-  .text-muted-foreground {
-    color: #9ca3af !important;
-  }
-
-  /* Card text should be white */
-  .card-foreground {
-    color: white !important;
-  }
+/* Button styles with better visibility */
+button {
+  color: white !important;
+  font-weight: 500;
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
+/* Primary buttons */
+button[class*="bg-primary"] {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  color: white !important;
+  border: 1px solid #2563eb;
 }
 
-@keyframes matrix-rain {
+button[class*="bg-primary"]:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+/* Outline buttons with colors */
+button[class*="variant-outline"] {
+  background: rgba(30, 41, 59, 0.8) !important;
+  border: 1px solid #475569 !important;
+  color: white !important;
+}
+
+button[class*="variant-outline"]:hover {
+  background: rgba(51, 65, 85, 0.9) !important;
+  border-color: #64748b !important;
+}
+
+/* Colored action buttons */
+.bg-green-600 {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+}
+
+.bg-blue-600 {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+}
+
+.bg-purple-600 {
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%) !important;
+}
+
+.bg-orange-600 {
+  background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%) !important;
+}
+
+.bg-red-600 {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+}
+
+/* Card styles */
+.glass-effect {
+  background: rgba(30, 41, 59, 0.4) !important;
+  border: 1px solid rgba(148, 163, 184, 0.2) !important;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Input and form elements */
+input, select, textarea {
+  background: rgba(30, 41, 59, 0.8) !important;
+  border: 1px solid #475569 !important;
+  color: white !important;
+}
+
+input::placeholder, select option {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Badge styles */
+.bg-destructive {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+  color: white !important;
+}
+
+/* Progress bars and rings */
+.text-primary {
+  color: #60a5fa !important;
+}
+
+.text-primary\/70 {
+  color: rgba(96, 165, 250, 0.7) !important;
+}
+
+.text-slate-300 {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.text-slate-400 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Hover effects */
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+/* Animations */
+@keyframes dashProgress {
   0% {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  90% {
-    opacity: 1;
+    stroke-dashoffset: 100%;
   }
   100% {
-    transform: translateY(100vh);
-    opacity: 0;
+    stroke-dashoffset: var(--progress-offset);
   }
 }
 
-.matrix-rain {
-  animation: matrix-rain 3s linear infinite;
+/* Ensure text contrast */
+h1, h2, h3, h4, h5, h6, p, span, div, label {
+  color: white !important;
 }
 
-/* Custom scrollbar */
+/* Special cases for specific elements */
+.text-emerald-400 {
+  color: #34d399 !important;
+}
+
+.text-green-400 {
+  color: #4ade80 !important;
+}
+
+.text-red-400 {
+  color: #f87171 !important;
+}
+
+.text-blue-400 {
+  color: #60a5fa !important;
+}
+
+/* Sidebar and navigation */
+nav, aside {
+  background: rgba(15, 23, 42, 0.9) !important;
+}
+
+/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #020617;
+  background: rgba(30, 41, 59, 0.3);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #06b6d4;
+  background: rgba(148, 163, 184, 0.5);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0891b2;
-}
-
-:root {
-  --font-geist: 'Geist', sans-serif;
-}
-
-/* GSAP Animation Helper Classes */
-.gsap-fade-in {
-  opacity: 0;
-  transform: translateY(50px);
-}
-
-.gsap-scale-in {
-  opacity: 0;
-  transform: scale(0.8);
-}
-
-.gsap-slide-left {
-  opacity: 0;
-  transform: translateX(-100px);
-}
-
-/* Dark Blue Theme Overrides */
-.bg-white {
-  background-color: #0f172a !important;
-}
-
-.text-black {
-  color: white !important;
-}
-
-.border-white {
-  border-color: #374151 !important;
-}
-
-/* Interactive Button Styles */
-.interactive-btn {
-  position: relative;
-  overflow: hidden;
-  transform: perspective(1px) translateZ(0);
-  transition: all 0.3s ease;
-}
-
-.interactive-btn:hover {
-  transform: scale(1.05) perspective(1px) translateZ(0);
-}
-
-.interactive-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: left 0.5s;
-}
-
-.interactive-btn:hover::before {
-  left: 100%;
-}
-
-/* Ensure all text is white by default */
-* {
-  color: white;
-}
-
-/* Override specific shadcn components that might have dark text */
-.ui-card h3,
-.ui-card p,
-.ui-card span,
-.ui-button,
-.ui-badge {
-  color: white !important;
-}
-
-/* Enhanced button styles for better visibility */
-.lucide {
-  color: inherit !important;
-}
-
-/* Make sure all buttons have proper contrast */
-button[class*="bg-primary"] {
-  background-color: #06b6d4 !important;
-  color: #0f172a !important;
-}
-
-button[class*="bg-primary"]:hover {
-  background-color: #0891b2 !important;
-  color: #0f172a !important;
-}
-
-button[class*="border-primary"] {
-  border-color: #06b6d4 !important;
-  color: #06b6d4 !important;
-}
-
-button[class*="border-primary"]:hover {
-  background-color: #06b6d4 !important;
-  color: #0f172a !important;
-  border-color: #06b6d4 !important;
+  background: rgba(148, 163, 184, 0.7);
 }

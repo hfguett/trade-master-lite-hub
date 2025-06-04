@@ -175,6 +175,14 @@ const Dashboard = () => {
         return <BotTrading />;
       case "risk-management":
         return <RiskManagement />;
+      case "backtesting":
+        return <Backtesting />;
+      case "position-calculator":
+        return <PositionCalculator />;
+      case "price-alerts":
+        return <PriceAlerts />;
+      case "pnl-tracker":
+        return <PnLTracker />;
       case "drawing":
       case "diagrams":
         return <TradingWorkspace />;
@@ -191,18 +199,18 @@ const Dashboard = () => {
       default:
         return (
           <div className="space-y-6 main-content">
-            {/* Enhanced Stats Grid with Progress */}
+            {/* Enhanced Stats Grid with Progress and Visible Values */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
                 <Card key={index} className="stat-card glass-effect border-primary/20 hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-4">
                       <div>
-                        <p className="text-sm text-primary/70 mb-1">{stat.title}</p>
-                        <p className="text-2xl font-bold text-primary">{stat.value}</p>
+                        <p className="text-sm text-white/70 mb-1">{stat.title}</p>
+                        <p className="text-2xl font-bold text-white">{stat.value}</p>
                         <div className="flex items-center mt-2">
                           {stat.icon}
-                          <span className="text-sm ml-1 text-primary">
+                          <span className="text-sm ml-1 text-white">
                             {stat.change}
                           </span>
                         </div>
@@ -212,7 +220,8 @@ const Dashboard = () => {
                           value={stat.progress} 
                           size={64}
                           strokeWidth={6}
-                          showValue={false}
+                          showValue={true}
+                          label=""
                         />
                       </div>
                     </div>
@@ -225,14 +234,14 @@ const Dashboard = () => {
             <div className="grid lg:grid-cols-3 gap-6">
               <Card className="lg:col-span-2 glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between text-primary">
+                  <CardTitle className="flex items-center justify-between text-white">
                     Portfolio Performance
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="border-primary/50 hover:border-primary text-primary hover:bg-primary hover:text-white">
+                      <Button variant="outline" size="sm" className="border-primary/50 hover:border-primary text-white hover:bg-primary hover:text-black">
                         <Filter className="h-4 w-4 mr-2" />
                         Filter
                       </Button>
-                      <Button variant="outline" size="sm" className="border-primary/50 hover:border-primary text-primary hover:bg-primary hover:text-white">
+                      <Button variant="outline" size="sm" className="border-primary/50 hover:border-primary text-white hover:bg-primary hover:text-black">
                         <Download className="h-4 w-4 mr-2" />
                         Export
                       </Button>
@@ -251,16 +260,16 @@ const Dashboard = () => {
 
               <Card className="glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
                 <CardHeader>
-                  <CardTitle className="text-primary">Quick Actions</CardTitle>
+                  <CardTitle className="text-white">Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button className="w-full bg-primary hover:bg-primary/80 text-white transition-all duration-300 hover:scale-105">
+                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white transition-all duration-300 hover:scale-105">
                     <Plus className="h-4 w-4 mr-2" />
                     Add Trade
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full border-primary/50 hover:border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105"
+                    className="w-full border-blue-500 bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300 hover:scale-105"
                     onClick={() => setActiveTab("ai-signals")}
                   >
                     <Target className="h-4 w-4 mr-2" />
@@ -268,7 +277,7 @@ const Dashboard = () => {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full border-primary/50 hover:border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105"
+                    className="w-full border-purple-500 bg-purple-600 hover:bg-purple-700 text-white transition-all duration-300 hover:scale-105"
                     onClick={() => setActiveTab("bot-trading")}
                   >
                     <BarChart3 className="h-4 w-4 mr-2" />
@@ -276,7 +285,7 @@ const Dashboard = () => {
                   </Button>
                   <Button 
                     variant="outline" 
-                    className="w-full border-primary/50 hover:border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105"
+                    className="w-full border-orange-500 bg-orange-600 hover:bg-orange-700 text-white transition-all duration-300 hover:scale-105"
                     onClick={() => setActiveTab("risk-management")}
                   >
                     <TrendingUp className="h-4 w-4 mr-2" />
@@ -294,7 +303,7 @@ const Dashboard = () => {
 
             <Card className="glass-effect border-primary/20 hover:scale-105 transition-all duration-300">
               <CardHeader>
-                <CardTitle className="text-primary">Recent Trades</CardTitle>
+                <CardTitle className="text-white">Recent Trades</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -312,12 +321,12 @@ const Dashboard = () => {
                           {trade.type}
                         </Badge>
                         <div>
-                          <p className="font-semibold text-primary">{trade.symbol}</p>
-                          <p className="text-sm text-slate-300">{trade.date}</p>
+                          <p className="font-semibold text-white">{trade.symbol}</p>
+                          <p className="text-sm text-white/70">{trade.date}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm text-slate-300 font-mono">
+                        <p className="text-sm text-white/70 font-mono">
                           {trade.entry} → {trade.exit}
                         </p>
                         <p className={`font-semibold font-mono ${
@@ -348,6 +357,10 @@ const Dashboard = () => {
       "ai-signals": "AI Trading Signals",
       "bot-trading": "Automated Trading",
       "risk-management": "Risk Management",
+      "backtesting": "Strategy Backtesting",
+      "position-calculator": "Position Calculator",
+      "price-alerts": "Price Alerts",
+      "pnl-tracker": "P&L Tracker",
       drawing: "Drawing & Diagrams",
       diagrams: "Drawing & Diagrams",
       notes: "Notes Manager",
@@ -371,6 +384,10 @@ const Dashboard = () => {
       "ai-signals": "AI-powered trading recommendations",
       "bot-trading": "Manage automated trading strategies",
       "risk-management": "Monitor and control trading risks",
+      "backtesting": "Test strategies against historical data",
+      "position-calculator": "Calculate optimal position sizes",
+      "price-alerts": "Set up price notifications",
+      "pnl-tracker": "Real-time profit and loss monitoring",
       drawing: "Vector drawings and strategy diagrams",
       diagrams: "Vector drawings and strategy diagrams",
       notes: "Organize your trading notes and ideas",
@@ -390,14 +407,14 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold mb-2 text-primary">
+              <h1 className="text-3xl font-bold mb-2 text-white">
                 {getPageTitle()}
               </h1>
-              <p className="text-slate-300">
+              <p className="text-white/70">
                 {getPageDescription()}
               </p>
             </div>
-            <Button className="bg-primary hover:bg-primary/80 text-white transition-all duration-300 hover:scale-105">
+            <Button className="bg-green-600 hover:bg-green-700 text-white transition-all duration-300 hover:scale-105">
               <Plus className="h-4 w-4 mr-2" />
               Quick Add
             </Button>

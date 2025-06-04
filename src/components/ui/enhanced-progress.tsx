@@ -68,12 +68,10 @@ export const RingProgress: React.FC<RingProgressProps> = ({
           }}
         />
       </svg>
-      {label && (
-        <div className="absolute text-center transition-all duration-300 group-hover:scale-110">
-          <div className="text-lg font-bold text-white mb-1 font-inter">{label}</div>
-          {showValue && <div className="text-2xl font-bold font-mono" style={{ color: finalColor }}>{value}%</div>}
-        </div>
-      )}
+      <div className="absolute text-center transition-all duration-300 group-hover:scale-110">
+        {label && <div className="text-sm font-bold text-white mb-1 font-inter">{label}</div>}
+        {showValue && <div className="text-lg font-bold font-mono text-white">{value}%</div>}
+      </div>
     </div>
   );
 };
@@ -102,7 +100,7 @@ export const BarProgress: React.FC<BarProgressProps> = ({
         ></div>
         {showValue && (
           <span 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-lg font-bold text-white font-mono drop-shadow-md transition-all duration-300 group-hover:scale-110"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm font-bold text-white font-mono drop-shadow-md transition-all duration-300 group-hover:scale-110"
           >
             {value}%
           </span>
