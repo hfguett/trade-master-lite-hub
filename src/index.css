@@ -59,39 +59,39 @@
 
   .dark {
     --background: 220 30% 3%;
-    --foreground: 217 91% 95%;
+    --foreground: 0 0% 100%;
 
     --card: 220 26% 6%;
-    --card-foreground: 217 91% 95%;
+    --card-foreground: 0 0% 100%;
 
     --popover: 220 26% 6%;
-    --popover-foreground: 217 91% 95%;
+    --popover-foreground: 0 0% 100%;
 
     --primary: 217 91% 60%;
     --primary-foreground: 220 30% 3%;
 
     --secondary: 220 26% 8%;
-    --secondary-foreground: 217 91% 95%;
+    --secondary-foreground: 0 0% 100%;
 
     --muted: 220 26% 8%;
-    --muted-foreground: 217 40% 70%;
+    --muted-foreground: 0 0% 80%;
 
     --accent: 220 26% 8%;
-    --accent-foreground: 217 91% 95%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 50%;
-    --destructive-foreground: 217 91% 95%;
+    --destructive-foreground: 0 0% 100%;
 
     --border: 220 26% 12%;
     --input: 220 26% 8%;
     --ring: 217 91% 60%;
 
     --sidebar-background: 220 30% 3%;
-    --sidebar-foreground: 217 91% 95%;
+    --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 220 30% 3%;
     --sidebar-accent: 220 26% 6%;
-    --sidebar-accent-foreground: 217 91% 95%;
+    --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 220 26% 12%;
     --sidebar-ring: 217 91% 60%;
   }
@@ -103,10 +103,33 @@
   }
 
   body {
-    @apply bg-slate-950 text-slate-100;
+    @apply bg-slate-950 text-white;
     font-family: 'Inter', system-ui, sans-serif;
     background: radial-gradient(ellipse at center, #1e293b 0%, #0f172a 70%, #020617 100%);
     min-height: 100vh;
+    color: white !important;
+  }
+
+  /* Force white text on all elements */
+  h1, h2, h3, h4, h5, h6, p, span, div, a, label, button {
+    color: white !important;
+  }
+
+  /* Exception for specific components that need different colors */
+  .text-primary {
+    color: #06b6d4 !important;
+  }
+  
+  .text-green-400 {
+    color: #4ade80 !important;
+  }
+  
+  .text-red-400 {
+    color: #f87171 !important;
+  }
+  
+  .text-mint {
+    color: #06b6d4 !important;
   }
 
   .font-mono {
@@ -120,11 +143,11 @@
 
 @layer utilities {
   .text-primary {
-    color: #06b6d4;
+    color: #06b6d4 !important;
   }
   
   .text-primary-light {
-    color: #67e8f9;
+    color: #67e8f9 !important;
   }
   
   .bg-primary {
@@ -136,7 +159,7 @@
   }
   
   .text-secondary {
-    color: #8b5cf6;
+    color: #8b5cf6 !important;
   }
   
   .bg-secondary {
@@ -144,7 +167,7 @@
   }
   
   .text-accent {
-    color: #3b82f6;
+    color: #3b82f6 !important;
   }
   
   .bg-accent {
@@ -152,19 +175,27 @@
   }
   
   .text-white {
-    color: white;
+    color: white !important;
   }
   
   .text-slate-100 {
-    color: #f1f5f9;
+    color: #f1f5f9 !important;
   }
   
   .text-slate-300 {
-    color: #cbd5e1;
+    color: #cbd5e1 !important;
   }
   
   .text-slate-400 {
-    color: #94a3b8;
+    color: #94a3b8 !important;
+  }
+
+  .text-gray-400 {
+    color: #9ca3af !important;
+  }
+
+  .text-gray-300 {
+    color: #d1d5db !important;
   }
   
   .bg-slate-800 {
@@ -376,6 +407,41 @@
   .hover-glow:hover {
     box-shadow: 0 0 20px rgba(6, 182, 212, 0.4), 0 0 40px rgba(6, 182, 212, 0.2);
   }
+
+  /* Force white text on all common elements */
+  .text-black {
+    color: white !important;
+  }
+
+  .text-gray-900 {
+    color: white !important;
+  }
+
+  .text-gray-800 {
+    color: white !important;
+  }
+
+  .text-gray-700 {
+    color: white !important;
+  }
+
+  .text-gray-600 {
+    color: #d1d5db !important;
+  }
+
+  .text-gray-500 {
+    color: #9ca3af !important;
+  }
+
+  /* Muted text should be lighter but still readable */
+  .text-muted-foreground {
+    color: #9ca3af !important;
+  }
+
+  /* Card text should be white */
+  .card-foreground {
+    color: white !important;
+  }
 }
 
 @keyframes float {
@@ -452,7 +518,7 @@
 }
 
 .text-black {
-  color: #f1f5f9 !important;
+  color: white !important;
 }
 
 .border-white {
@@ -484,4 +550,18 @@
 
 .interactive-btn:hover::before {
   left: 100%;
+}
+
+/* Ensure all text is white by default */
+* {
+  color: white;
+}
+
+/* Override specific shadcn components that might have dark text */
+.ui-card h3,
+.ui-card p,
+.ui-card span,
+.ui-button,
+.ui-badge {
+  color: white !important;
 }
