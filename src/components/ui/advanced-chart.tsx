@@ -15,7 +15,6 @@ import {
   Cell,
   BarChart,
   Bar,
-  CandlestickChart,
   ReferenceLine,
   Brush
 } from 'recharts';
